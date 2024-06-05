@@ -63,125 +63,136 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Form(
-        key: _formKey,
-        child: ListView(
-          children: [
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              icon: const Icon(Icons.email),
-              label: const Text('Signup with Email'),
-              onPressed: () => _toggleSignupMethod(true),
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-              ),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton.icon(
-              icon: const Icon(Icons.phone),
-              label: const Text('Signup with Phone Number'),
-              onPressed: () => _toggleSignupMethod(false),
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-              ),
-            ),
-            const SizedBox(height: 20),
-            if (_isEmailSignup)
-              CustomTextField(
-                labelText: 'Email',
-                hintText: 'Enter your email',
-                validator: validateEmail,
-                onSaved: (value) {
-                  _email = value ?? '';
-                },
-              )
-            else
-              Column(
-                children: [
-                  DropdownButtonFormField<Country>(
-                    decoration: const InputDecoration(
-                      labelText: 'Country Code',
-                      hintText: 'Select your country code',
+    return Scaffold(
+      appBar: AppBar(title: Text('Admin Signup')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              const SizedBox(height: 20),
+              if (_isEmailSignup)
+                CustomTextField(
+                  labelText: 'Email',
+                  hintText: 'Enter your email',
+                  validator: validateEmail,
+                  onSaved: (value) {
+                    _email = value ?? '';
+                  },
+                )
+              else
+                Column(
+                  children: [
+                    DropdownButtonFormField<Country>(
+                      decoration: const InputDecoration(
+                        labelText: 'Country Code',
+                        hintText: 'Select your country code',
+                      ),
+                      items: countries.map((Country country) {
+                        return DropdownMenuItem<Country>(
+                          value: country,
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                country.flagPath,
+                                width: 24,
+                                height: 24,
+                                fit: BoxFit.cover,
+                              ),
+                              const SizedBox(width: 8),
+                              Text('${country.name} (${country.code})'),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select a country code';
+                        }
+                        return null;
+                      },
+                      onChanged: (Country? newValue) {
+                        setState(() {
+                          _selectedCountry = newValue;
+                        });
+                      },
+                      onSaved: (value) {
+                        _selectedCountry = value;
+                      },
                     ),
-                    items: countries.map((Country country) {
-                      return DropdownMenuItem<Country>(
-                        value: country,
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              country.flagPath,
-                              width: 24,
-                              height: 24,
-                              fit: BoxFit.cover,
-                            ),
-                            const SizedBox(width: 8),
-                            Text('${country.name} (${country.code})'),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                    validator: (value) {
-                      if (value == null) {
-                        return 'Please select a country code';
-                      }
-                      return null;
-                    },
-                    onChanged: (Country? newValue) {
-                      setState(() {
-                        _selectedCountry = newValue;
-                      });
-                    },
-                    onSaved: (value) {
-                      _selectedCountry = value;
-                    },
+                    CustomTextField(
+                      labelText: 'Phone Number',
+                      hintText: 'Enter your phone number',
+                      validator: validatePhoneNumber,
+                      onSaved: (value) {
+                        _phoneNumber = value ?? '';
+                      },
+                    ),
+                  ],
+                ),
+              CustomTextField(
+                labelText: 'Username',
+                hintText: 'Enter your username',
+                validator: validateUsername,
+                onSaved: (value) {
+                  _username = value ?? '';
+                },
+              ),
+              CustomTextField(
+                controller: _passwordController,
+                labelText: 'Password',
+                hintText: 'Enter your password',
+                isPassword: !_passwordVisible,
+                validator: validatePassword,
+                onSaved: (value) {
+                  // This saves the password to a variable if needed
+                },
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _passwordVisible ? Icons.visibility : Icons.visibility_off,
                   ),
-                  CustomTextField(
-                    labelText: 'Phone Number',
-                    hintText: 'Enter your phone number',
-                    validator: validatePhoneNumber,
-                    onSaved: (value) {
-                      _phoneNumber = value ?? '';
-                    },
+                  onPressed: _togglePasswordVisibility,
+                ),
+              ),
+              const SizedBox(height: 20),
+              CustomButton(
+                text: 'Create Account',
+                onPressed: () {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    _formKey.currentState?.save();
+                    _signup();
+                  }
+                },
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      icon: const Icon(Icons.email),
+                      label: const Text('Signup with Email'),
+                      onPressed: () => _toggleSignupMethod(true),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: ElevatedButton.icon(
+                      icon: const Icon(Icons.phone),
+                      label: const Text('Signup with Phone'),
+                      onPressed: () => _toggleSignupMethod(false),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      ),
+                    ),
                   ),
                 ],
               ),
-            CustomTextField(
-              labelText: 'Username',
-              hintText: 'Enter your username',
-              validator: validateUsername,
-              onSaved: (value) {
-                _username = value ?? '';
-              },
-            ),
-            CustomTextField(
-              controller: _passwordController,
-              labelText: 'Password',
-              hintText: 'Enter your password',
-              isPassword: !_passwordVisible,
-              validator: validatePassword,
-              onSaved: (value) {
-                // This saves the password to a variable if needed
-              },
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _passwordVisible ? Icons.visibility : Icons.visibility_off,
-                ),
-                onPressed: _togglePasswordVisibility,
-              ),
-            ),
-            const SizedBox(height: 20),
-            CustomButton(
-              text: 'Create Account',
-              onPressed: () {
-                if (_formKey.currentState?.validate() ?? false) {
-                  _formKey.currentState?.save();
-                  _signup();
-                }
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

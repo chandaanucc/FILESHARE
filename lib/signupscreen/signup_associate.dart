@@ -64,103 +64,96 @@ class _AssociateSignupScreenState extends State<AssociateSignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text('Associate Signup')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
+          child: ListView(
             children: [
-              Expanded(
-                child: ListView(
+              const SizedBox(height: 20),
+              if (_isEmailSignup)
+                CustomTextField(
+                  labelText: 'Email',
+                  hintText: 'Enter your email',
+                  validator: validateEmail,
+                  onSaved: (value) {
+                    _email = value ?? '';
+                  },
+                )
+              else
+                Column(
                   children: [
-                    const SizedBox(height: 20),
-                    if (_isEmailSignup)
-                      CustomTextField(
-                        labelText: 'Email',
-                        hintText: 'Enter your email',
-                        validator: validateEmail,
-                        onSaved: (value) {
-                          _email = value ?? '';
-                        },
-                      )
-                    else
-                      Column(
-                        children: [
-                          DropdownButtonFormField<Country>(
-                            decoration: const InputDecoration(
-                              labelText: 'Country Code',
-                              hintText: 'Select your country code',
-                            ),
-                            items: countries.map((Country country) {
-                              return DropdownMenuItem<Country>(
-                                value: country,
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      country.flagPath,
-                                      width: 24,
-                                      height: 24,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text('${country.name} (${country.code})'),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
-                            validator: (value) {
-                              if (value == null) {
-                                return 'Please select a country code';
-                              }
-                              return null;
-                            },
-                            onChanged: (Country? newValue) {
-                              setState(() {
-                                _selectedCountry = newValue;
-                              });
-                            },
-                            onSaved: (value) {
-                              _selectedCountry = value;
-                            },
-                          ),
-                          CustomTextField(
-                            labelText: 'Phone Number',
-                            hintText: 'Enter your phone number',
-                            validator: validatePhoneNumber,
-                            onSaved: (value) {
-                              _phoneNumber = value ?? '';
-                            },
-                          ),
-                        ],
+                    DropdownButtonFormField<Country>(
+                      decoration: const InputDecoration(
+                        labelText: 'Country Code',
+                        hintText: 'Select your country code',
                       ),
-                    CustomTextField(
-                      labelText: 'Username',
-                      hintText: 'Enter your username',
-                      validator: validateUsername,
+                      items: countries.map((Country country) {
+                        return DropdownMenuItem<Country>(
+                          value: country,
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                country.flagPath,
+                                width: 24,
+                                height: 24,
+                                fit: BoxFit.cover,
+                              ),
+                              const SizedBox(width: 8),
+                              Text('${country.name} (${country.code})'),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select a country code';
+                        }
+                        return null;
+                      },
+                      onChanged: (Country? newValue) {
+                        setState(() {
+                          _selectedCountry = newValue;
+                        });
+                      },
                       onSaved: (value) {
-                        _username = value ?? '';
+                        _selectedCountry = value;
                       },
                     ),
                     CustomTextField(
-                      controller: _passwordController,
-                      labelText: 'Password',
-                      hintText: 'Enter your password',
-                      isPassword: !_passwordVisible,
-                      validator: validatePassword,
+                      labelText: 'Phone Number',
+                      hintText: 'Enter your phone number',
+                      validator: validatePhoneNumber,
                       onSaved: (value) {
-                        // This saves the password to a variable if needed
+                        _phoneNumber = value ?? '';
                       },
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _passwordVisible ? Icons.visibility : Icons.visibility_off,
-                        ),
-                        onPressed: _togglePasswordVisibility,
-                      ),
                     ),
-                    const SizedBox(height: 20),
                   ],
                 ),
-                
+              CustomTextField(
+                labelText: 'Username',
+                hintText: 'Enter your username',
+                validator: validateUsername,
+                onSaved: (value) {
+                  _username = value ?? '';
+                },
+              ),
+              CustomTextField(
+                controller: _passwordController,
+                labelText: 'Password',
+                hintText: 'Enter your password',
+                isPassword: !_passwordVisible,
+                validator: validatePassword,
+                onSaved: (value) {
+                  // This saves the password to a variable if needed
+                },
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: _togglePasswordVisibility,
+                ),
               ),
               const SizedBox(height: 20),
               CustomButton(
@@ -172,6 +165,7 @@ class _AssociateSignupScreenState extends State<AssociateSignupScreen> {
                   }
                 },
               ),
+              const SizedBox(height: 20),
               Row(
                 children: [
                   Expanded(
@@ -188,7 +182,7 @@ class _AssociateSignupScreenState extends State<AssociateSignupScreen> {
                   Expanded(
                     child: ElevatedButton.icon(
                       icon: const Icon(Icons.phone),
-                      label: const Text('Signup with Phone '),
+                      label: const Text('Signup with Phone'),
                       onPressed: () => _toggleSignupMethod(false),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -198,10 +192,10 @@ class _AssociateSignupScreenState extends State<AssociateSignupScreen> {
                 ],
               ),
               
-            ],
+                ],
+              ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
