@@ -1,40 +1,26 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, library_private_types_in_public_api
 
-import 'package:file_share_application/models/country.dart';
 import 'package:flutter/material.dart';
 import '../utils/validators.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
-import '../widgets/country_dropdown.dart';
 
-class AdminSignupScreen extends StatefulWidget {
-  const AdminSignupScreen({super.key});
+class AssociateLoginScreen extends StatefulWidget {
+  const AssociateLoginScreen({super.key});
 
   @override
-  _AdminSignupScreenState createState() => _AdminSignupScreenState();
+  _AssociateLoginScreenState createState() => _AssociateLoginScreenState();
 }
 
-class _AdminSignupScreenState extends State<AdminSignupScreen> {
+class _AssociateLoginScreenState extends State<AssociateLoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
-  bool _isEmailSignup = true;
   bool _passwordVisible = false;
+  bool _isEmailLogin = true;
 
-  String _username = '';
   String _email = '';
   String _phoneNumber = '';
-  Country? _selectedCountry;
-
-  void _toggleSignupMethod(bool isEmailSignup) {
-    setState(() {
-      _isEmailSignup = isEmailSignup;
-      _selectedCountry = null;
-      _phoneNumber = '';
-      _email = '';
-      _username = '';
-      _passwordController.clear();
-    });
-  }
+  String _password = '';
 
   void _togglePasswordVisibility() {
     setState(() {
@@ -42,11 +28,20 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
     });
   }
 
-  void _signup() {
+  void _toggleLoginMethod(bool isEmailLogin) {
+    setState(() {
+      _isEmailLogin = isEmailLogin;
+      _email = '';
+      _phoneNumber = '';
+      _passwordController.clear();
+    });
+  }
+
+  void _login() {
     if (_formKey.currentState?.validate() ?? false) {
       _formKey.currentState?.save();
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('User created successfully!')),
+        const SnackBar(content: Text('Logged in successfully!')),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -71,7 +66,7 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
           child: ListView(
             children: [
               const SizedBox(height: 20),
-              if (_isEmailSignup)
+              if (_isEmailLogin)
                 CustomTextField(
                   labelText: 'Email',
                   hintText: 'Enter your email',
@@ -81,37 +76,14 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
                   },
                 )
               else
-                Column(
-                  children: [
-                    CountryDropdown(
-                      selectedCountry: _selectedCountry,
-                      onChanged: (Country? newValue) {
-                        setState(() {
-                          _selectedCountry = newValue;
-                        });
-                      },
-                      onSaved: (value) {
-                        _selectedCountry = value;
-                      },
-                    ),
-                    CustomTextField(
-                      labelText: 'Phone Number',
-                      hintText: 'Enter your phone number',
-                      validator: validatePhoneNumber,
-                      onSaved: (value) {
-                        _phoneNumber = value ?? '';
-                      },
-                    ),
-                  ],
+                CustomTextField(
+                  labelText: 'Phone Number',
+                  hintText: 'Enter your phone number',
+                  validator: validatePhoneNumber,
+                  onSaved: (value) {
+                    _phoneNumber = value ?? '';
+                  },
                 ),
-              CustomTextField(
-                labelText: 'Username',
-                hintText: 'Enter your username',
-                validator: validateUsername,
-                onSaved: (value) {
-                  _username = value ?? '';
-                },
-              ),
               CustomTextField(
                 controller: _passwordController,
                 labelText: 'Password',
@@ -119,7 +91,7 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
                 isPassword: !_passwordVisible,
                 validator: validatePassword,
                 onSaved: (value) {
-                  // This saves the password to a variable if needed
+                  _password = value ?? '';
                 },
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -130,13 +102,8 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
               ),
               const SizedBox(height: 20),
               CustomButton(
-                text: 'Create Account',
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    _formKey.currentState?.save();
-                    _signup();
-                  }
-                },
+                text: 'Login',
+                onPressed: _login,
               ),
               const SizedBox(height: 20),
               Row(
@@ -144,8 +111,8 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
                   Expanded(
                     child: ElevatedButton.icon(
                       icon: const Icon(Icons.email),
-                      label: const Text('Signup with Email'),
-                      onPressed: () => _toggleSignupMethod(true),
+                      label: const Text('Login with Email'),
+                      onPressed: () => _toggleLoginMethod(true),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
                       ),
@@ -155,8 +122,8 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
                   Expanded(
                     child: ElevatedButton.icon(
                       icon: const Icon(Icons.phone),
-                      label: const Text('Signup with Phone'),
-                      onPressed: () => _toggleSignupMethod(false),
+                      label: const Text('Login with Phone'),
+                      onPressed: () => _toggleLoginMethod(false),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16.0),
                       ),

@@ -1,11 +1,11 @@
-// ignore_for_file: library_private_types_in_public_api, unused_field
+// ignore_for_file: unused_field
 
+import 'package:file_share_application/models/country.dart';
 import 'package:flutter/material.dart';
 import '../utils/validators.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
-import '../utils/countries.dart';
-import '../models/country.dart';
+import '../widgets/country_dropdown.dart';
 
 class AssociateSignupScreen extends StatefulWidget {
   const AssociateSignupScreen({super.key});
@@ -28,11 +28,11 @@ class _AssociateSignupScreenState extends State<AssociateSignupScreen> {
   void _toggleSignupMethod(bool isEmailSignup) {
     setState(() {
       _isEmailSignup = isEmailSignup;
-      _selectedCountry = null; // Clear selected country
-      _phoneNumber = ''; // Clear phone number
-      _email = ''; // Clear email
-      _username = ''; // Clear username
-      _passwordController.clear(); // Clear password
+      _selectedCountry = null;
+      _phoneNumber = '';
+      _email = '';
+      _username = '';
+      _passwordController.clear();
     });
   }
 
@@ -64,7 +64,7 @@ class _AssociateSignupScreenState extends State<AssociateSignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Associate Signup')),
+      appBar: AppBar(title: const Text('Associate Signup')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -84,34 +84,8 @@ class _AssociateSignupScreenState extends State<AssociateSignupScreen> {
               else
                 Column(
                   children: [
-                    DropdownButtonFormField<Country>(
-                      decoration: const InputDecoration(
-                        labelText: 'Country Code',
-                        hintText: 'Select your country code',
-                      ),
-                      items: countries.map((Country country) {
-                        return DropdownMenuItem<Country>(
-                          value: country,
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                country.flagPath,
-                                width: 24,
-                                height: 24,
-                                fit: BoxFit.cover,
-                              ),
-                              const SizedBox(width: 8),
-                              Text('${country.name} (${country.code})'),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Please select a country code';
-                        }
-                        return null;
-                      },
+                    CountryDropdown(
+                      selectedCountry: _selectedCountry,
                       onChanged: (Country? newValue) {
                         setState(() {
                           _selectedCountry = newValue;
@@ -191,11 +165,10 @@ class _AssociateSignupScreenState extends State<AssociateSignupScreen> {
                   ),
                 ],
               ),
-              
-                ],
-              ),
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 }
