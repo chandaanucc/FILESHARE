@@ -144,7 +144,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
                 case 'My Uploads':
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const UploadScreen()),
+                    MaterialPageRoute(builder: (context) =>  UploadScreen()),
                   );
                   break;
                 case 'Edit Pdf':
@@ -240,7 +240,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
                         } else if (index == 2) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const UploadScreen()),
+                            MaterialPageRoute(builder: (context) =>  UploadScreen()),
                           );
                         }
                       },

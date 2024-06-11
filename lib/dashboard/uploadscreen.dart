@@ -1,57 +1,129 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
-class UploadScreen extends StatelessWidget {
-  const UploadScreen({super.key});
+void main() {
+  runApp(MaterialApp(
+    title: 'Image Upload and View',
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+    ),
+    home: UploadScreen(),
+  ));
+}
+
+// class UploadScreen extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+     
+//       body: Container(
+//         color: Color.fromARGB(255, 12, 7, 110),
+//         child: Center(
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: <Widget>[
+//               ElevatedButton(
+//                 onPressed: () {
+//                   Navigator.push(
+//                     context,
+//                     MaterialPageRoute(builder: (context) => MyHomePage()),
+//                   );
+//                 },
+//                 child: Text('Upload Image'),
+//                 style: ElevatedButton.styleFrom(
+//                   backgroundColor: Colors.yellow[800],
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+class UploadScreen extends StatefulWidget {
+  @override
+  _UploadScreenState createState() => _UploadScreenState();
+}
+
+class _UploadScreenState extends State<UploadScreen> {
+  Uint8List? _imageData;
+
+  Future<void> _uploadImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      final imageData = await pickedFile.readAsBytes();
+      setState(() {
+        _imageData = imageData;
+      });
+    }
+  }
+
+  void _viewImage() {
+  if (_imageData != null) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            backgroundColor:  Color.fromARGB(255, 12, 7, 110),
+            title: Text('View Image',style: TextStyle(fontWeight: FontWeight.bold, color: Colors.yellow[800]), ),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.yellow[800],),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+            
+            body: Container(
+              
+              color: Color.fromARGB(255, 12, 7, 110),
+              child: Center(
+                
+                child: kIsWeb
+                    ? Image.memory(_imageData!)
+                    : Image.memory(_imageData!),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Uploads'),
-      ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('uploads').snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            return GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10.0,
-                mainAxisSpacing: 10.0,
+      
+      body: Container(
+        color: Color.fromARGB(255, 12, 7, 110),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              ElevatedButton(
+                onPressed: _uploadImage,
+                child: Text('Select pdf'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.yellow[800],
+                ),
               ),
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                var document = snapshot.data!.docs[index];
-                // ignore: unnecessary_cast
-                var data = document.data() as Map<String, dynamic>; // Cast to Map
-
-                return InkWell(
-                  onTap: () {
-                    // Handle tap event
-                  },
-                  child: GridTile(
-                    footer: GridTileBar(
-                      backgroundColor: Colors.black54,
-                      title: Text(
-                        data['fileName'] ?? '', // Accessing 'fileName' field safely
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    child: Image.network(
-                      data['downloadUrl'] ?? '', // Accessing 'downloadUrl' field safely
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                );
-              },
-            );
-          }
-        },
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _viewImage,
+                child: Text('View pdf'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.yellow[800],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
