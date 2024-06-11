@@ -42,9 +42,9 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
-          const AssociateLoginScreen(),
-          const AdminLoginScreen(),
+        children: const [
+          AssociateLoginScreen(),
+          AdminLoginScreen(),
         ],
       ),
     );
