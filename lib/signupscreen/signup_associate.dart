@@ -64,7 +64,7 @@ class _AssociateSignupScreenState extends State<AssociateSignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Associate Signup')),
+    
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -138,6 +138,21 @@ class _AssociateSignupScreenState extends State<AssociateSignupScreen> {
                     _signup();
                   }
                 },
+              ),
+              const SizedBox(height: 20),
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, '/login');
+                  },
+                  child: const Text(
+                    'Already a User? Login',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               Row(

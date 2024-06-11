@@ -30,7 +30,7 @@ class _SignupPageState extends State<SignupPage> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sign Up'),
+        title: const Text('New User ?'),
         bottom: TabBar(
           controller: _tabController,
           tabs: const [
@@ -41,8 +41,8 @@ class _SignupPageState extends State<SignupPage> with SingleTickerProviderStateM
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
-          const AssociateSignupScreen(),
+        children: const [
+          AssociateSignupScreen(),
           AdminSignupScreen(),
         ],
       ),

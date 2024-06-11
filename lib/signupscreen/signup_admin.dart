@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, library_private_types_in_public_api
 
 import 'package:file_share_application/models/country.dart';
 import 'package:flutter/material.dart';
@@ -131,12 +131,27 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
               const SizedBox(height: 20),
               CustomButton(
                 text: 'Create Account',
-                onPressed: () {
+                onPressed: () { 
                   if (_formKey.currentState?.validate() ?? false) {
                     _formKey.currentState?.save();
                     _signup();
                   }
                 },
+              ),
+              const SizedBox(height: 20),
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, '/login');
+                  },
+                  child: const Text(
+                    'Already a User? Login',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(height: 20),
               Row(

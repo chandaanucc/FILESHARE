@@ -106,6 +106,21 @@ class _AssociateLoginScreenState extends State<AssociateLoginScreen> {
                 onPressed: _login,
               ),
               const SizedBox(height: 20),
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, '/signup');
+                  },
+                  child: const Text(
+                    'New User? Signup',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
               Row(
                 children: [
                   Expanded(
