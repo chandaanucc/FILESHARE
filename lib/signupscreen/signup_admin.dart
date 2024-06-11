@@ -1,5 +1,6 @@
 // ignore_for_file: unused_field, library_private_types_in_public_api
 
+import 'package:file_share_application/loginscreen/login_page.dart';
 import 'package:file_share_application/models/country.dart';
 import 'package:flutter/material.dart';
 import '../utils/validators.dart';
@@ -48,6 +49,8 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('User created successfully!')),
       );
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const LoginPage()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fix the errors in red before submitting.')),
@@ -119,7 +122,7 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
                 isPassword: !_passwordVisible,
                 validator: validatePassword,
                 onSaved: (value) {
-                  // This saves the password to a variable if needed
+                 // This saves the password to a variable if needed
                 },
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -135,6 +138,7 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
                   if (_formKey.currentState?.validate() ?? false) {
                     _formKey.currentState?.save();
                     _signup();
+                     
                   }
                 },
               ),
@@ -142,7 +146,8 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, '/login');
+                    Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const LoginPage()));
                   },
                   child: const Text(
                     'Already a User? Login',

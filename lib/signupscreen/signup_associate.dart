@@ -1,5 +1,6 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, library_private_types_in_public_api
 
+import 'package:file_share_application/loginscreen/login_page.dart';
 import 'package:file_share_application/models/country.dart';
 import 'package:flutter/material.dart';
 import '../utils/validators.dart';
@@ -47,7 +48,10 @@ class _AssociateSignupScreenState extends State<AssociateSignupScreen> {
       _formKey.currentState?.save();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('User created successfully!')),
+        
       );
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const LoginPage()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fix the errors in red before submitting.')),
@@ -143,12 +147,13 @@ class _AssociateSignupScreenState extends State<AssociateSignupScreen> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, '/login');
+                    Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const LoginPage()));
                   },
                   child: const Text(
                     'Already a User? Login',
                     style: TextStyle(
-                      color: Colors.blue,
+                      color: Color.fromARGB(255, 12, 7, 110),
                       decoration: TextDecoration.underline,
                     ),
                   ),

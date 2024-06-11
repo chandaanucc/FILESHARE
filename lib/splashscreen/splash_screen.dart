@@ -14,7 +14,7 @@ class _splashScreenStateState extends State<SplashScreenState> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const SignupPage()));
     });
@@ -27,7 +27,7 @@ class _splashScreenStateState extends State<SplashScreenState> {
         width: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-              colors: [Color.fromARGB(255, 39, 0, 156), Colors.white],
+              colors: [Color.fromARGB(255, 12, 7, 110), Colors.yellow],
               begin: Alignment.topRight,
               end: Alignment.bottomLeft),
         ),
@@ -39,6 +39,8 @@ class _splashScreenStateState extends State<SplashScreenState> {
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 35,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Poppins'
                 )),
           ],
         ),

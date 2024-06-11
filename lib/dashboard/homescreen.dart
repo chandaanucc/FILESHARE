@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:file_share_application/dashboard/uploadpdfscreen.dart';
 import 'package:file_share_application/dashboard/uploadscreen.dart';
 import 'package:file_share_application/dashboard/viewpdfscreen.dart';
@@ -5,14 +7,14 @@ import 'package:flutter/material.dart';
 
 
 class HomeScreen1 extends StatefulWidget {
-  const HomeScreen1({Key? key}) : super(key: key);
+  const HomeScreen1({super.key});
 
   @override
   _HomeScreen1State createState() => _HomeScreen1State();
 }
 
 class _HomeScreen1State extends State<HomeScreen1> {
-  Map<String, bool> _isHovering = {
+  final Map<String, bool> _isHovering = {
     'Profile': false,
     'My Uploads': false,
     'Edit Pdf': false,
@@ -40,7 +42,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 12, 7, 110),
+        backgroundColor: const Color.fromARGB(255, 12, 7, 110),
         title: Text(
           'Share Plus',
           style: TextStyle(
@@ -68,7 +70,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
                   },
                   child: Container(
                     color: _isHovering['Profile']! ? Colors.yellow : Colors.transparent,
-                    child: Text('Profile'),
+                    child: const Text('Profile'),
                   ),
                 ),
               ),
@@ -88,7 +90,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
                   },
                   child: Container(
                     color: _isHovering['My Uploads']! ? Colors.yellow : Colors.transparent,
-                    child: Text('My Uploads'),
+                    child: const Text('My Uploads'),
                   ),
                 ),
               ),
@@ -108,7 +110,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
                   },
                   child: Container(
                     color: _isHovering['Edit Pdf']! ? Colors.yellow : Colors.transparent,
-                    child: Text('Edit Pdf'),
+                    child: const Text('Edit Pdf'),
                   ),
                 ),
               ),
@@ -128,7 +130,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
                   },
                   child: Container(
                     color: _isHovering['Logout']! ? Colors.yellow : Colors.transparent,
-                    child: Text('Logout'),
+                    child: const Text('Logout'),
                   ),
                 ),
               ),
@@ -142,7 +144,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
                 case 'My Uploads':
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => UploadScreen()),
+                    MaterialPageRoute(builder: (context) => const UploadScreen()),
                   );
                   break;
                 case 'Edit Pdf':
@@ -160,7 +162,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
       body: Container(
         height: height,
         width: width,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Color.fromARGB(255, 12, 7, 110),
           image: DecorationImage(
             image: AssetImage('assets/value.jpg'),
@@ -169,7 +171,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
         ),
         child: Column(
           children: [
-            Container(
+            SizedBox(
               height: 350, // Adjusted height
               width: width,
               child: Padding(
@@ -179,11 +181,11 @@ class _HomeScreen1State extends State<HomeScreen1> {
                   right: 20,
                 ),
                 child: Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     top: 20,
                   ),
                   child: Container(
-                    margin: EdgeInsets.only(
+                    margin: const EdgeInsets.only(
                       bottom: 260, // Adjusted margin bottom
                     ),
                     child: Row(
@@ -206,7 +208,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
             Expanded(
               child: Container(
                 height: height * 0.5, // Adjusted height
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
@@ -214,13 +216,13 @@ class _HomeScreen1State extends State<HomeScreen1> {
                   ),
                 ),
                 child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 1.1,
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 5,
                   ),
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   itemCount: imageData.length,
                   itemBuilder: (context, index) {
                     return InkWell(
@@ -228,27 +230,27 @@ class _HomeScreen1State extends State<HomeScreen1> {
                         if (index == 0) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => UploadPdfScreen()),
+                            MaterialPageRoute(builder: (context) => const UploadPdfScreen()),
                           );
                         } else if (index == 1) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => ViewPdfScreen(pdfPath: 'path/to/pdf')),
+                            MaterialPageRoute(builder: (context) => const ViewPdfScreen(pdfPath: 'assets/pdfs/National_ Immunization_Schedule.pdf')),
                           );
                         } else if (index == 2) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => UploadScreen()),
+                            MaterialPageRoute(builder: (context) => const UploadScreen()),
                           );
                         }
                       },
                       child: Container(
                         height: 100,
                         width: 10,
-                        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: Color.fromARGB(255, 26, 6, 97),
+                          color: const Color.fromARGB(255, 26, 6, 97),
                           boxShadow: [
                             BoxShadow(
                               spreadRadius: 1,
@@ -266,7 +268,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
                               height: 50,
                               fit: BoxFit.contain,
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Text(
                               imageData[index],
                               style: TextStyle(

@@ -13,8 +13,8 @@ class ViewPdfScreen extends StatelessWidget {
         children: [
           // Custom AppBar
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            decoration: const BoxDecoration(
               color: Color.fromARGB(255, 48, 9, 139),
               boxShadow: [
                 BoxShadow(
@@ -29,12 +29,12 @@ class ViewPdfScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.white),
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
                     onPressed: () {
                       Navigator.pop(context);
                     },
                   ),
-                  Text(
+                  const Text(
                     'View PDF',
                     style: TextStyle(
                       color: Colors.white,
@@ -42,7 +42,7 @@ class ViewPdfScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(width: 48), // To balance the back button on the left
+                  const SizedBox(width: 48), // To balance the back button on the left
                 ],
               ),
             ),

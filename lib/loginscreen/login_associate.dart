@@ -1,5 +1,7 @@
 // ignore_for_file: unused_field, library_private_types_in_public_api
 
+import 'package:file_share_application/dashboard/homescreen.dart';
+import 'package:file_share_application/signupscreen/signup_page.dart';
 import 'package:flutter/material.dart';
 import '../utils/validators.dart';
 import '../widgets/custom_button.dart';
@@ -43,6 +45,8 @@ class _AssociateLoginScreenState extends State<AssociateLoginScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Logged in successfully!')),
       );
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const HomeScreen1()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fix the errors in red before submitting.')),
@@ -109,7 +113,8 @@ class _AssociateLoginScreenState extends State<AssociateLoginScreen> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, '/signup');
+                    Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const SignupPage()));
                   },
                   child: const Text(
                     'New User? Signup',

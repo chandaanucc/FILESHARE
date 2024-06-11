@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, use_build_context_synchronously, library_private_types_in_public_api
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -8,11 +10,11 @@ import 'package:file_picker/file_picker.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MaterialApp(home: UploadPdfScreen()));
+  runApp(const MaterialApp(home: UploadPdfScreen()));
 }
 
 class UploadPdfScreen extends StatefulWidget {
-  const UploadPdfScreen({Key? key}) : super(key: key);
+  const UploadPdfScreen({super.key});
 
   @override
   _UploadPdfScreenState createState() => _UploadPdfScreenState();
@@ -50,7 +52,7 @@ class _UploadPdfScreenState extends State<UploadPdfScreen> {
       await uploadTask;
       String downloadUrl = await ref.getDownloadURL();
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('PDF uploaded successfully!'),
       ));
       print('File upload completed successfully. Download URL: $downloadUrl');
@@ -65,19 +67,19 @@ class _UploadPdfScreenState extends State<UploadPdfScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(500.0), // Define custom height for AppBar
+        preferredSize: const Size.fromHeight(500.0), // Define custom height for AppBar
         child: Stack(
           children: [
             AppBar(
-              backgroundColor: Color.fromARGB(255, 12, 7, 110),
-              title: Row(
+              backgroundColor: const Color.fromARGB(255, 12, 7, 110),
+              title: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(''),
                 ],
               ),
               leading: IconButton(
-                icon: Icon(Icons.arrow_back), color: Colors.white,
+                icon: const Icon(Icons.arrow_back), color: Colors.white,
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -87,15 +89,15 @@ class _UploadPdfScreenState extends State<UploadPdfScreen> {
               left:  200,
               bottom: 05,
               child: Container(
-                color: Color.fromARGB(255, 12, 7, 110),
+                color: const Color.fromARGB(255, 12, 7, 110),
                 child: ElevatedButton(
                   onPressed: _uploading ? null : () => _uploadPDF(context),
-                  child: Text(
-                    'Upload PDF',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(Colors.yellow[800]!),
+                  ),
+                  child: const Text(
+                    'Upload PDF',
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -113,7 +115,7 @@ class _UploadPdfScreenState extends State<UploadPdfScreen> {
                 backgroundColor: Colors.yellow[800],
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow[800]!),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(
                 'Uploading PDF... ${_uploadProgress.toStringAsFixed(2)}%',
                 style: TextStyle(
