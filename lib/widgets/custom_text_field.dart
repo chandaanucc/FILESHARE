@@ -19,7 +19,7 @@ class CustomTextField extends StatelessWidget {
     this.validator,
     this.onSaved,
     this.suffixIcon,
-    this.prefixWidget,
+    this.prefixWidget, required TextStyle labelStyle, required TextStyle textStyle, required UnderlineInputBorder enabledBorder,
   });
 
   @override
@@ -31,10 +31,14 @@ class CustomTextField extends StatelessWidget {
         obscureText: isPassword,
         validator: validator,
         onSaved: onSaved,
+        style: const TextStyle(color: Color(0xFF66FCF1)), // Text color of the typed text
         decoration: InputDecoration(
           labelText: labelText,
           hintText: hintText,
-          
+          labelStyle: const TextStyle(color: Color(0xFF66FCF1)), // Label color
+          enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Color(0xFF66FCF1)), // Border color
+          ),
           suffixIcon: suffixIcon,
           prefixIcon: prefixWidget,
         ),

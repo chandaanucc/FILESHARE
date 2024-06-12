@@ -50,3 +50,22 @@ String? validatePassword(String? value) {
   }
   return null;
 }
+
+String? validateEmailOrUsername(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'This field cannot be empty';
+  }
+  // Validate email
+  const emailPattern = r'^[^@]+@[^@]+\.[^@]+';
+  final emailRegExp = RegExp(emailPattern);
+
+  // Validate username (alphanumeric, at least 3 characters)
+  const usernamePattern = r'^[a-zA-Z0-9_]{3,}$';
+  final usernameRegExp = RegExp(usernamePattern);
+
+  if (emailRegExp.hasMatch(value) || usernameRegExp.hasMatch(value)) {
+    return null;
+  }
+  return 'Enter a valid email or username';
+}
+
