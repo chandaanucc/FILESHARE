@@ -76,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _usernameController,
                 labelText: 'Username or Email',
                 hintText: 'Enter your username or email',
-                validator: validateEmailOrUsername,
+                // validator: validateEmailOrUsername,
                 onSaved: (value) {
                   _username = value ?? '';
                 },
@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 labelText: 'Password',
                 hintText: 'Enter your password',
                 isPassword: !_passwordVisible,
-                validator: validatePassword,
+                // validator: validatePassword,
                 onSaved: (value) {
                   _password = value ?? '';
                 },

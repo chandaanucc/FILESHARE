@@ -83,7 +83,7 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
                 CustomTextField(
                   labelText: 'Username',
                   hintText: 'Enter your Username',
-                  validator: validateUsername,
+                  // validator: validateUsername,
                   onSaved: (value) {
                     _username = value ?? '';
                   },
@@ -96,7 +96,7 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
                 CustomTextField(
                   labelText: 'Email',
                   hintText: 'Enter your Email',
-                  validator: validateEmail,
+                  // validator: validateEmail,
                   onSaved: (value) {
                     _email = value ?? '';
                   },
@@ -111,7 +111,7 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
                   labelText: 'Password',
                   hintText: 'Enter your password',
                   isPassword: !_passwordVisible,
-                  validator: validatePassword,
+                  // validator: validatePassword,
                   onSaved: (value) {
                     _password = value ?? '';
                   },
@@ -135,15 +135,15 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
                   labelText: 'Confirm Password',
                   hintText: 'Confirm your password',
                   isPassword: !_passwordVisible,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please confirm your password';
-                    }
-                    if (value != _passwordController.text) {
-                      return 'Passwords do not match';
-                    }
-                    return null;
-                  },
+                  // validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return 'Please confirm your password';
+                  //   }
+                  //   if (value != _passwordController.text) {
+                  //     return 'Passwords do not match';
+                  //   }
+                  //   return null;
+                  // },
                   onSaved: (value) {
                     _confirmPassword = value ?? '';
                   },
