@@ -1,5 +1,6 @@
 // ignore_for_file: unused_field, library_private_types_in_public_api
 
+import 'package:file_share_application/dashboard/homescreen.dart';
 import 'package:file_share_application/signupscreen/signup.dart';
 import 'package:flutter/material.dart';
 import '../utils/validators.dart';
@@ -36,8 +37,12 @@ class _LoginScreenState extends State<LoginScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Login successful!')),
       );
-      // Navigate to your home or dashboard screen after successful login
-    } else {
+      
+        Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomeScreen1()),
+      );    
+        } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fix the errors in red before submitting.')),
       );

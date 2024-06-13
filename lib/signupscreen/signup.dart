@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import '../utils/validators.dart';
@@ -7,7 +7,7 @@ import '../widgets/custom_text_field.dart';
 import '../loginscreen/login_page.dart';
 
 class AdminSignupScreen extends StatefulWidget {
-  const AdminSignupScreen({Key? key}) : super(key: key);
+  const AdminSignupScreen({super.key});
 
   @override
   _AdminSignupScreenState createState() => _AdminSignupScreenState();
