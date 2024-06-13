@@ -136,7 +136,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
                         } else if (index == 1) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) =>  ViewPdfScreen()),
+                            MaterialPageRoute(builder: (context) =>  UploadScreen()),
                           );
                         } else if (index == 2) {
                           Navigator.push(
