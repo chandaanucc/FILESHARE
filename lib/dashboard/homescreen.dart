@@ -1,13 +1,10 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:file_share_application/dashboard/uploadpdfscreen.dart';
 import 'package:file_share_application/dashboard/uploadscreen.dart';
 import 'package:file_share_application/dashboard/viewpdfscreen.dart';
 import 'package:flutter/material.dart';
 
-
 class HomeScreen1 extends StatefulWidget {
-  const HomeScreen1({super.key});
+  const HomeScreen1({Key? key}) : super(key: key);
 
   @override
   _HomeScreen1State createState() => _HomeScreen1State();
@@ -41,175 +38,79 @@ class _HomeScreen1State extends State<HomeScreen1> {
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 12, 7, 110),
-        title: Text(
-          'Share Plus',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.yellow[800],
-          ),
-        ),
-        actions: [
-          PopupMenuButton<String>(
-            icon: Icon(Icons.menu, color: Colors.yellow[800]),
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              PopupMenuItem<String>(
-                value: 'Profile',
-                child: MouseRegion(
-                  onEnter: (_) {
-                    setState(() {
-                      _isHovering['Profile'] = true;
-                    });
-                  },
-                  onExit: (_) {
-                    setState(() {
-                      _isHovering['Profile'] = false;
-                    });
-                  },
-                  child: Container(
-                    color: _isHovering['Profile']! ? Colors.yellow : Colors.transparent,
-                    child: const Text('Profile'),
-                  ),
-                ),
-              ),
-              const PopupMenuDivider(),
-              PopupMenuItem<String>(
-                value: 'My Uploads',
-                child: MouseRegion(
-                  onEnter: (_) {
-                    setState(() {
-                      _isHovering['My Uploads'] = true;
-                    });
-                  },
-                  onExit: (_) {
-                    setState(() {
-                      _isHovering['My Uploads'] = false;
-                    });
-                  },
-                  child: Container(
-                    color: _isHovering['My Uploads']! ? Colors.yellow : Colors.transparent,
-                    child: const Text('My Uploads'),
-                  ),
-                ),
-              ),
-              const PopupMenuDivider(),
-              PopupMenuItem<String>(
-                value: 'Edit Pdf',
-                child: MouseRegion(
-                  onEnter: (_) {
-                    setState(() {
-                      _isHovering['Edit Pdf'] = true;
-                    });
-                  },
-                  onExit: (_) {
-                    setState(() {
-                      _isHovering['Edit Pdf'] = false;
-                    });
-                  },
-                  child: Container(
-                    color: _isHovering['Edit Pdf']! ? Colors.yellow : Colors.transparent,
-                    child: const Text('Edit Pdf'),
-                  ),
-                ),
-              ),
-              const PopupMenuDivider(),
-              PopupMenuItem<String>(
-                value: 'Logout',
-                child: MouseRegion(
-                  onEnter: (_) {
-                    setState(() {
-                      _isHovering['Logout'] = true;
-                    });
-                  },
-                  onExit: (_) {
-                    setState(() {
-                      _isHovering['Logout'] = false;
-                    });
-                  },
-                  child: Container(
-                    color: _isHovering['Logout']! ? Colors.yellow : Colors.transparent,
-                    child: const Text('Logout'),
-                  ),
-                ),
-              ),
-            ],
-            onSelected: (value) {
-              // Handle menu item selection
-              switch (value) {
-                case 'Profile':
-                  // Handle Profile tap
-                  break;
-                case 'My Uploads':
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) =>  UploadScreen()),
-                  );
-                  break;
-                case 'Edit Pdf':
-                  // Handle Edit Pdf tap
-                  break;
-                case 'Logout':
-                  // Handle Logout tap
-                  break;
-                default:
-              }
-            },
-          ),
-        ],
-      ),
       body: Container(
         height: height,
         width: width,
         decoration: const BoxDecoration(
-          color: Color.fromARGB(255, 12, 7, 110),
           image: DecorationImage(
-            image: AssetImage('assets/value.jpg'),
+            image: AssetImage("assets/flags/download.jpeg"),
             fit: BoxFit.cover,
           ),
         ),
         child: Column(
           children: [
-            SizedBox(
-              height: 350, // Adjusted height
+            Container(
+              height: 400,
               width: width,
               child: Padding(
                 padding: const EdgeInsets.only(
-                  top: 10,
-                  left: 20,
-                  right: 20,
+                  top: 90,
+                  left: 120,
+                  right: 10,
+                  bottom: 20,
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    top: 20,
-                  ),
-                  child: Container(
-                    margin: const EdgeInsets.only(
-                      bottom: 260, // Adjusted margin bottom
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          '',
+                          'SHARE',
                           style: TextStyle(
-                            color: Colors.yellow[800],
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                            color: Color(0xff66fcf1),
+                            fontSize: 45,
+                            letterSpacing: 2.0,
+                            fontWeight: FontWeight.w900,
                           ),
+                        ),
+                        Image.asset(
+                          "assets/flags/himage.png",
+                          width: 100,
+                          height: 100,
                         ),
                       ],
                     ),
-                  ),
+                    Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 20,
+                        
+                        bottom: 50,
+                        
+                        
+                        ),
+                      child: Row(
+                        
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Image.asset(
+                            "assets/flags/homelogo.png",
+                            width: 140,
+                            height: 140,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
             Expanded(
               child: Container(
-                height: height * 0.5, // Adjusted height
+                height: height * 0.7,
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: Color(0xffC5C6C7),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
@@ -218,11 +119,11 @@ class _HomeScreen1State extends State<HomeScreen1> {
                 child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    childAspectRatio: 1.1,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 5,
+                    childAspectRatio: 1.0,
+                    mainAxisSpacing: 15,
+                    crossAxisSpacing: 30,
                   ),
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
                   itemCount: imageData.length,
                   itemBuilder: (context, index) {
                     return InkWell(
@@ -230,27 +131,27 @@ class _HomeScreen1State extends State<HomeScreen1> {
                         if (index == 0) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const UploadPdfScreen()),
+                            MaterialPageRoute(builder: (context) => UploadScreen()),
                           );
                         } else if (index == 1) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const ViewPdfScreen(pdfPath: 'assets/pdfs/National_ Immunization_Schedule.pdf')),
+                            MaterialPageRoute(builder: (context) =>  ViewPdfScreen()),
                           );
                         } else if (index == 2) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) =>  UploadScreen()),
+                            MaterialPageRoute(builder: (context) => UploadScreen()),
                           );
                         }
                       },
                       child: Container(
-                        height: 100,
+                        height: 250,
                         width: 10,
                         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: const Color.fromARGB(255, 26, 6, 97),
+                          color: Color.fromARGB(255, 8, 4, 23),
                           boxShadow: [
                             BoxShadow(
                               spreadRadius: 1,
@@ -266,6 +167,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
                               images[index],
                               width: 50,
                               height: 50,
+                              color: Color(0xff45A29E),
                               fit: BoxFit.contain,
                             ),
                             const SizedBox(height: 10),
@@ -273,7 +175,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
                               imageData[index],
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.yellow[800],
+                                color: Color(0xffC5C6C7),
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
