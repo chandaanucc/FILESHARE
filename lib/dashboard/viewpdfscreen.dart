@@ -1,79 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'package:flutter/services.dart' show rootBundle;
 
-class ViewPdfScreen extends StatelessWidget {
-  final String pdfPath;
+void main() => runApp(MyApp());
 
-  const ViewPdfScreen({Key? key, required this.pdfPath}) : super(key: key);
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: ViewPdfScreen(),
+    );
+  }
+}
+
+class ViewPdfScreen extends StatefulWidget {
+  @override
+  _ViewPdfScreenState createState() => _ViewPdfScreenState();
+}
+
+class _ViewPdfScreenState extends State<ViewPdfScreen> {
+  String pathPDF = "";
+
+  @override
+  void initState() {
+    super.initState();
+    fromAsset('assets/python.pdf', 'python.pdf').then((f) {
+      setState(() {
+        pathPDF = f.path;
+      });
+    });
+  }
+
+  Future<File> fromAsset(String asset, String filename) async {
+    try {
+      var data = await rootBundle.load(asset);
+      var bytes = data.buffer.asUint8List();
+      var dir = await getApplicationDocumentsDirectory();
+      File file = File("${dir.path}/$filename");
+      File assetFile = await file.writeAsBytes(bytes);
+      return assetFile;
+    } catch (e) {
+      throw Exception("Error opening asset file");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          // Custom AppBar
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 48, 9, 139),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 4.0,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-            child: SafeArea(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  const Text(
-                    'View PDF',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(width: 48), // To balance the back button on the left
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            child: Center(
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black,
-                    width: 2.0,
-                  ),
-                ),
-                child: PDFView(
-                  filePath: pdfPath,
-                  enableSwipe: true,
-                  swipeHorizontal: true,
-                  autoSpacing: false,
-                  pageFling: false,
-                  onRender: (_pages) {
-                    // PDF has been rendered
-                  },
-                  
-                ),
-              ),
-            ),
-          ),
-        ],
+      appBar: AppBar(
+        title: Text('PDF View'),
       ),
+      body: pathPDF.isNotEmpty
+          ? PDFView(
+              filePath: pathPDF,
+            )
+          : Center(child: CircularProgressIndicator()),
     );
   }
 }
