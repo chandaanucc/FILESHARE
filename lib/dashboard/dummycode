@@ -1,0 +1,300 @@
+// // ignore_for_file: avoid_print, use_build_context_synchronously, library_private_types_in_public_api
+
+// import 'dart:io';
+
+// import 'package:flutter/material.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:file_picker/file_picker.dart';
+
+// void main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp();
+//   runApp(const MaterialApp(home: UploadPdfScreen()));
+// }
+
+// class UploadPdfScreen extends StatefulWidget {
+//   const UploadPdfScreen({super.key});
+
+//   @override
+//   _UploadPdfScreenState createState() => _UploadPdfScreenState();
+// }
+
+// class _UploadPdfScreenState extends State<UploadPdfScreen> {
+//   double _uploadProgress = 0.0;
+//   bool _uploading = false;
+
+//   Future<void> _uploadPDF(BuildContext context) async {
+//     setState(() {
+//       _uploadProgress = 0.0;
+//       _uploading = true;
+//     });
+
+//     FilePickerResult? result = await FilePicker.platform.pickFiles(
+//       type: FileType.custom,
+//       allowedExtensions: ['pdf'],
+//     );
+
+//     if (result != null) {
+//       File pickedFile = File(result.files.single.path!);
+//       String fileName = result.files.single.name;
+
+//       Reference ref = FirebaseStorage.instance.ref().child('uploads/$fileName');
+//       UploadTask uploadTask = ref.putFile(pickedFile);
+
+//       uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+//         double progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+//         setState(() {
+//           _uploadProgress = progress;
+//         });
+//       });
+
+//       await uploadTask;
+//       String downloadUrl = await ref.getDownloadURL();
+
+//       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+//         content: Text('PDF uploaded successfully!'),
+//       ));
+//       print('File upload completed successfully. Download URL: $downloadUrl');
+//     }
+
+//     setState(() {
+//       _uploading = false;
+//     });
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: PreferredSize(
+//         preferredSize: const Size.fromHeight(500.0), // Define custom height for AppBar
+//         child: Stack(
+//           children: [
+//             AppBar(
+//               backgroundColor: const Color.fromARGB(255, 12, 7, 110),
+//               title: const Row(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children: [
+//                   Text(''),
+//                 ],
+//               ),
+//               leading: IconButton(
+//                 icon: const Icon(Icons.arrow_back), color: Colors.white,
+//                 onPressed: () {
+//                   Navigator.of(context).pop();
+//                 },
+//               ),
+//             ),
+//             Positioned(
+//               left:  200,
+//               bottom: 05,
+//               child: Container(
+//                 color: const Color.fromARGB(255, 12, 7, 110),
+//                 child: ElevatedButton(
+//                   onPressed: _uploading ? null : () => _uploadPDF(context),
+//                   style: ButtonStyle(
+//                     backgroundColor: MaterialStateProperty.all<Color>(Colors.yellow[800]!),
+//                   ),
+//                   child: const Text(
+//                     'Upload PDF',
+//                     style: TextStyle(fontWeight: FontWeight.bold),
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             if (_uploading) ...[
+//               LinearProgressIndicator(
+//                 value: _uploadProgress / 100,
+//                 backgroundColor: Colors.yellow[800],
+//                 valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow[800]!),
+//               ),
+//               const SizedBox(height: 20),
+//               Text(
+//                 'Uploading PDF... ${_uploadProgress.toStringAsFixed(2)}%',
+//                 style: TextStyle(
+//                   color: Colors.yellow[800],
+//                   fontWeight: FontWeight.bold,
+//                 ),
+//               ),
+//             ],
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+import 'package:share_plus/dashboard/uploadpdfscreen.dart';
+import 'package:share_plus/dashboard/uploadscreen.dart';
+import 'package:share_plus/dashboard/viewpdfscreen.dart';
+import 'package:flutter/material.dart';
+
+class HomeScreen1 extends StatefulWidget {
+  const HomeScreen1({super.key});
+
+  @override
+  _HomeScreen1State createState() => _HomeScreen1State();
+}
+
+class _HomeScreen1State extends State<HomeScreen1> {
+  final Map<String, bool> _isHovering = {
+    'Profile': false,
+    'My Uploads': false,
+    'Edit Pdf': false,
+    'Logout': false,
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+
+    List<String> images = [
+      "assets/flags/plus.png",
+      "assets/flags/view.png",
+      "assets/flags/listfolder.png",
+      "assets/flags/contacts.png",
+
+    ];
+
+    List<String> imageData = [
+      "Upload Pdf",
+      "View Pdf",
+      "My Uploads",
+      "Edit Pdf",
+
+    ];
+
+    return Scaffold(
+      body: Container(
+        height: height,
+        width: width,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/flags/download.jpeg"), // Update with your image asset path
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 400, // Adjusted height
+              width: width,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 10,
+                  left: 20,
+                  right: 20,
+                  bottom: 20, // Added bottom padding
+                ),
+                child: Center(
+                  child: Text(
+                    'SHARE PLUS',
+                    // Added bold text
+                    style: TextStyle(
+                      color: Color(0xff66fcf1), // Specified color
+                      fontSize: 45, // Big font size
+                      letterSpacing: 2.0, // Space between each letter
+                      fontWeight: FontWeight.w900, // Bold text
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 5),
+            Expanded(
+              child: Container(
+                height: height * 0.7, // Adjusted height
+                decoration: const BoxDecoration(
+                  color: Color(0xffC5C6C7),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
+                ),
+                child: GridView.builder(
+
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 1.0,
+                    mainAxisSpacing: 15,
+                    crossAxisSpacing: 30,
+                  ),
+
+                  padding: const EdgeInsets.fromLTRB(20, 60, 20, 20), // Added top padding to move the grid downwards
+                  itemCount: imageData.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        if (index == 0) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => UploadPdfScreen()),
+                          );
+                        } else if (index == 1) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const ViewPdfScreen(pdfPath: 'assets/pdfs/National_ Immunization_Schedule.pdf')),
+                          );
+                        } else if (index == 2) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => UploadPdfScreen()),
+                          );
+                        }
+                      },
+                      child: Container(
+                        height: 250, // Increased height of the container
+                        width: 10,
+                        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Color.fromARGB(255, 8, 4, 23),
+                          boxShadow: [
+                            BoxShadow(
+                              spreadRadius: 1,
+                              blurRadius: 6,
+                              color: Colors.black.withOpacity(0.1),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              images[index],
+                              width: 50,
+                              height: 50,
+                              color:Color(0xff45A29E),
+                              fit: BoxFit.contain,
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              imageData[index],
+                              style: TextStyle(
+                                fontSize: 16,
+                                color:  Color(0xffC5C6C7),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
