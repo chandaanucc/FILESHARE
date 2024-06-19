@@ -1,17 +1,21 @@
+import 'dart:io' if (dart.library.html) 'dart:html';
+
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-void main() {
-  runApp(MaterialApp(
-    title: 'Image Upload and View',
-    theme: ThemeData(
-      primarySwatch: Colors.blue,
-    ),
-    home: UploadScreen(),
-  ));
-}
+// void main() {
+//   runApp(MaterialApp(
+//     title: 'PDF Upload and View',
+//     theme: ThemeData(
+//       primarySwatch: Colors.blue,
+//     ),
+//     home: UploadScreen(),
+//   ));
+// }
 
 class UploadScreen extends StatefulWidget {
   @override
@@ -19,55 +23,41 @@ class UploadScreen extends StatefulWidget {
 }
 
 class _UploadScreenState extends State<UploadScreen> {
-  Uint8List? _imageData;
+  Uint8List? _pdfData;
   String? _fileName;
 
-  Future<void> _uploadImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      final imageData = await pickedFile.readAsBytes();
+  Future<void> _uploadPdf() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null && result.files.isNotEmpty) {
+      Uint8List fileBytes = await result.files.first.bytes!;
+      String fileName = result.files.first.name ?? '';
+
       setState(() {
-        _imageData = imageData;
-        _fileName = pickedFile.name;
+        _pdfData = fileBytes;
+        _fileName = fileName;
       });
     }
   }
 
-  void _viewImage() {
-    if (_imageData != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Scaffold(
-            appBar: AppBar(
-              backgroundColor: Color.fromARGB(255, 12, 7, 110),
-              title: Text(
-                'View Image',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.yellow[800],
-                ),
-              ),
-              leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.yellow[800],
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
+  void _viewPdf() {
+    if (_pdfData != null) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('PDF Viewer'),
+          content: PDFViewer(pdfData: _pdfData!),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
             ),
-            body: Container(
-              color: Color.fromARGB(255, 12, 7, 110),
-              child: Center(
-                child: kIsWeb
-                    ? Image.memory(_imageData!)
-                    : Image.memory(_imageData!),
-              ),
-            ),
-          ),
+          ],
         ),
       );
     }
@@ -76,55 +66,44 @@ class _UploadScreenState extends State<UploadScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          color: Color.fromARGB(255, 12, 7, 110),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
+      appBar: AppBar(
+        title: Text('PDF Upload and View'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: _uploadPdf,
+              child: Text('Select PDF'),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _viewPdf,
+              child: Text('View PDF'),
+            ),
+            SizedBox(height: 20),
+            if (_fileName != null) // Display the file name if it's not null
+              Text(
+                'Selected File: $_fileName',
               ),
-              Expanded(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      ElevatedButton(
-                        onPressed: _uploadImage,
-                        child: Text('Select Image'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.yellow[800],
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: _viewImage,
-                        child: Text('View Image'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.yellow[800],
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      if (_fileName != null) // Display the file name if it's not null
-                        Text(
-                          'Selected File: $_fileName',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+          ],
         ),
       ),
+    );
+  }
+}
+
+class PDFViewer extends StatelessWidget {
+  final Uint8List pdfData;
+
+  PDFViewer({required this.pdfData});
+
+  @override
+  Widget build(BuildContext context) {
+    return PDFView(
+      filePath: null,
+      pdfData: pdfData,
     );
   }
 }

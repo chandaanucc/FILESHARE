@@ -1,7 +1,6 @@
-// ignore_for_file: unused_field, library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-// import '../utils/validators.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
 import '../loginscreen/login_page.dart';
@@ -15,15 +14,14 @@ class AdminSignupScreen extends StatefulWidget {
 
 class _AdminSignupScreenState extends State<AdminSignupScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _usernameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   bool _passwordVisible = false;
   bool _isLoading = false;
 
-  String _username = '';
-  String _email = '';
-  String _password = '';
-  String _confirmPassword = '';
+  //String _confirmPassword = '';
   String _role = 'Admin';
 
   void _togglePasswordVisibility() {
@@ -64,6 +62,8 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
 
   @override
   void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -80,8 +80,7 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-                "assets/background/background.jpeg"), // Replace with your background image
+            image: AssetImage("assets/background/background.jpeg"),
             fit: BoxFit.cover,
           ),
         ),
@@ -92,9 +91,11 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const SizedBox(height: 20),
                   Image.asset(
-                    "assets/flags/homelogo.png", // Replace with your logo image
+                    "assets/flags/homelogo.png",
                     height: 100,
+                    color: const Color(0xFF66FCF1),
                   ),
                   const SizedBox(height: 20),
                   SizedBox(
@@ -104,46 +105,19 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
                       child: Column(
                         children: [
                           CustomTextField(
-                            labelText: 'Username',
+                            controller: _usernameController,
                             hintText: 'Enter your Username',
-                            // validator: validateUsername,
-                            onSaved: (value) {
-                              _username = value ?? '';
-                            },
-                            labelStyle:
-                                const TextStyle(color: Color(0xFF66FCF1)),
-                            textStyle:
-                                const TextStyle(color: Color(0xFF66FCF1)),
-                            enabledBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF66FCF1)),
-                            ),
                           ),
                           const SizedBox(height: 20),
                           CustomTextField(
-                            labelText: 'Email',
+                            controller: _emailController,
                             hintText: 'Enter your Email',
-                            // validator: validateEmail,
-                            onSaved: (value) {
-                              _email = value ?? '';
-                            },
-                            labelStyle:
-                                const TextStyle(color: Color(0xFF66FCF1)),
-                            textStyle:
-                                const TextStyle(color: Color(0xFF66FCF1)),
-                            enabledBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF66FCF1)),
-                            ),
                           ),
                           const SizedBox(height: 20),
                           CustomTextField(
                             controller: _passwordController,
-                            labelText: 'Password',
                             hintText: 'Enter your password',
                             isPassword: !_passwordVisible,
-                            // validator: validatePassword,
-                            onSaved: (value) {
-                              _password = value ?? '';
-                            },
                             suffixIcon: IconButton(
                               icon: Icon(
                                 _passwordVisible
@@ -153,58 +127,29 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
                               ),
                               onPressed: _togglePasswordVisibility,
                             ),
-                            labelStyle:
-                                const TextStyle(color: Color(0xFF66FCF1)),
-                            textStyle:
-                                const TextStyle(color: Color(0xFF66FCF1)),
-                            enabledBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF66FCF1)),
-                            ),
                           ),
                           const SizedBox(height: 20),
                           CustomTextField(
                             controller: _confirmPasswordController,
-                            labelText: 'Confirm Password',
                             hintText: 'Confirm your password',
                             isPassword: !_passwordVisible,
-                            // validator: (value) {
-                            //   if (value == null || value.isEmpty) {
-                            //     return 'Please confirm your password';
-                            //   }
-                            //   if (value != _passwordController.text) {
-                            //     return 'Passwords do not match';
-                            //   }
-                            //   return null;
-                            // },
-                            onSaved: (value) {
-                              _confirmPassword = value ?? '';
-                            },
                             suffixIcon: IconButton(
                               icon: Icon(
-                                  _passwordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: const Color(0xFF66FCF1)),
+                                _passwordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: const Color(0xFF66FCF1),
+                              ),
                               onPressed: _togglePasswordVisibility,
-                            ),
-                            labelStyle:
-                                const TextStyle(color: Color(0xFF66FCF1)),
-                            textStyle:
-                                const TextStyle(color: Color(0xFF66FCF1)),
-                            enabledBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF66FCF1)),
                             ),
                           ),
                           const SizedBox(height: 20),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Expanded(
-                                child: ListTile(
-                                  title: const Text(
-                                    'Admin',
-                                    style: TextStyle(color: Color(0xFF66FCF1)),
-                                  ),
-                                  leading: Radio<String>(
+                              Row(
+                                children: [
+                                  Radio<String>(
                                     value: 'Admin',
                                     groupValue: _role,
                                     onChanged: (String? value) {
@@ -212,18 +157,21 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
                                         _role = value!;
                                       });
                                     },
-                                    fillColor: MaterialStateColor.resolveWith(
-                                        (states) => const Color(0xFF66FCF1)),
+                                    fillColor:
+                                        MaterialStateColor.resolveWith(
+                                            (states) =>
+                                                const Color(0xFF66FCF1)),
                                   ),
-                                ),
-                              ),
-                              Expanded(
-                                child: ListTile(
-                                  title: const Text(
-                                    'Associate',
+                                  const Text(
+                                    'Admin',
                                     style: TextStyle(color: Color(0xFF66FCF1)),
                                   ),
-                                  leading: Radio<String>(
+                                ],
+                              ),
+                              const SizedBox(width: 20),
+                              Row(
+                                children: [
+                                  Radio<String>(
                                     value: 'Associate',
                                     groupValue: _role,
                                     onChanged: (String? value) {
@@ -231,10 +179,16 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
                                         _role = value!;
                                       });
                                     },
-                                    fillColor: MaterialStateColor.resolveWith(
-                                        (states) => const Color(0xFF66FCF1)),
+                                    fillColor:
+                                        MaterialStateColor.resolveWith(
+                                            (states) =>
+                                                const Color(0xFF66FCF1)),
                                   ),
-                                ),
+                                  const Text(
+                                    'Associate',
+                                    style: TextStyle(color: Color(0xFF66FCF1)),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -266,16 +220,15 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
                             ),
                           ),
                           const SizedBox(height: 20),
+                          if (_isLoading)
+                            const CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Color(0xFF66FCF1)),
+                            ),
                         ],
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  if (_isLoading)
-                    const CircularProgressIndicator(
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(Color(0xFF66FCF1)),
-                    ),
                 ],
               ),
             ),

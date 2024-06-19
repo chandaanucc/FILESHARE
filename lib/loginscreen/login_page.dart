@@ -1,9 +1,8 @@
-// ignore_for_file: unused_field, library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api
 
+import 'package:flutter/material.dart';
 import 'package:share_plus/dashboard/homescreen.dart';
 import 'package:share_plus/signupscreen/signup.dart';
-import 'package:flutter/material.dart';
-// import '../utils/validators.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
 
@@ -55,7 +54,8 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('Please fix the errors in red before submitting.')),
+          content: Text('Please fix the errors in red before submitting.'),
+        ),
       );
     }
   }
@@ -71,8 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-                "assets/background/background.jpeg"), // Replace with your background image
+            image: AssetImage("assets/background/background.jpeg"),
             fit: BoxFit.cover,
           ),
         ),
@@ -84,8 +83,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/flags/homelogo.png', // Replace with your logo image
+                    'assets/flags/homelogo.png',
                     height: 100,
+                    color: const Color(0xFF66FCF1),
                   ),
                   const SizedBox(height: 20),
                   SizedBox(
@@ -96,27 +96,28 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           CustomTextField(
                             controller: _usernameController,
-                            labelText: 'Username or Email',
                             hintText: 'Enter your username or email',
-                            // validator: validateEmailOrUsername,
+                            // validator: (value) {
+                            //   if (value == null || value.isEmpty) {
+                            //     return 'Please enter a username or email';
+                            //   }
+                            //   return null;
+                            // },
                             onSaved: (value) {
                               _username = value ?? '';
                             },
-                            labelStyle:
-                                const TextStyle(color: Color(0xFF66FCF1)),
-                            textStyle:
-                                const TextStyle(color: Color(0xFF66FCF1)),
-                            enabledBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF66FCF1)),
-                            ),
                           ),
                           const SizedBox(height: 20),
                           CustomTextField(
                             controller: _passwordController,
-                            labelText: 'Password',
                             hintText: 'Enter your password',
                             isPassword: !_passwordVisible,
-                            // validator: validatePassword,
+                            // validator: (value) {
+                            //   if (value == null || value.isEmpty) {
+                            //     return 'Please enter a password';
+                            //   }
+                            //   return null;
+                            // },
                             onSaved: (value) {
                               _password = value ?? '';
                             },
@@ -128,13 +129,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: const Color(0xFF66FCF1),
                               ),
                               onPressed: _togglePasswordVisibility,
-                            ),
-                            labelStyle:
-                                const TextStyle(color: Color(0xFF66FCF1)),
-                            textStyle:
-                                const TextStyle(color: Color(0xFF66FCF1)),
-                            enabledBorder: const UnderlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFF66FCF1)),
                             ),
                           ),
                           const SizedBox(height: 20),
@@ -171,8 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 20),
                   if (_isLoading)
                     const CircularProgressIndicator(
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(Color(0xFF66FCF1)),
+                      valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF66FCF1)),
                     ),
                 ],
               ),

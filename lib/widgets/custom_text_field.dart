@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
-  final String labelText;
   final String hintText;
   final bool isPassword;
   final TextEditingController? controller;
@@ -11,16 +10,15 @@ class CustomTextField extends StatelessWidget {
   final Widget? prefixWidget;
 
   const CustomTextField({
-    super.key,
-    required this.labelText,
+    Key? key,
     required this.hintText,
     this.isPassword = false,
     this.controller,
     this.validator,
     this.onSaved,
     this.suffixIcon,
-    this.prefixWidget, required TextStyle labelStyle, required TextStyle textStyle, required UnderlineInputBorder enabledBorder,
-  });
+    this.prefixWidget,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +31,11 @@ class CustomTextField extends StatelessWidget {
         onSaved: onSaved,
         style: const TextStyle(color: Color(0xFF66FCF1)), // Text color of the typed text
         decoration: InputDecoration(
-          labelText: labelText,
           hintText: hintText,
-          labelStyle: const TextStyle(color: Color(0xFF66FCF1)), // Label color
-          enabledBorder: const UnderlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFF66FCF1)), // Border color
+          hintStyle: const TextStyle(color: Color(0xFF66FCF1)), // Hint text color
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Color.fromARGB(255, 194, 208, 207),width:1,strokeAlign : BorderSide.strokeAlignInside), // Border color
+            gapPadding: 3,
           ),
           suffixIcon: suffixIcon,
           prefixIcon: prefixWidget,

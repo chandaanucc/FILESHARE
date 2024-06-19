@@ -33,12 +33,17 @@ class _SplashScreenStateState extends State<SplashScreenState> {
           ),
         
         ),
-        child: const Column(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(color: Color(0xFF66FCF1)),
-            SizedBox(height: 20),
-            Text(
+            
+            Image.asset(
+                    "assets/flags/homelogo.png", // Replace with your logo image
+                    color: const Color(0xFF66FCF1) ,
+                    height: 100,
+                  ),
+            const SizedBox(height: 20),
+            const Text(
               'SHAREPLUS',
               style: TextStyle(
                 color: Color(0xFF66FCF1),
@@ -47,6 +52,9 @@ class _SplashScreenStateState extends State<SplashScreenState> {
                 fontFamily: 'Poppins',
               ),
             ),
+            const SizedBox(height: 20),
+            const CircularProgressIndicator(color: Color(0xFF66FCF1)),
+            
           ],
         ),
       ),
