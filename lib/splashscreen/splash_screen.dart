@@ -1,4 +1,5 @@
-import 'package:share_plus/signupscreen/signup.dart';
+import 'package:share_plus/loginscreen/login_page.dart';
+// import 'package:share_plus/signupscreen/signup.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreenState extends StatefulWidget {
@@ -16,7 +17,7 @@ class _SplashScreenStateState extends State<SplashScreenState> {
     Future.delayed(const Duration(seconds: 4), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const AdminSignupScreen()),
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
       );
     });
   }

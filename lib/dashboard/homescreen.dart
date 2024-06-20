@@ -1,6 +1,4 @@
-import 'package:share_plus/dashboard/uploadpdfscreen.dart';
 import 'package:share_plus/dashboard/uploadscreen.dart';
-import 'package:share_plus/dashboard/viewpdfscreen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen1 extends StatefulWidget {
@@ -43,7 +41,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
         width: width,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/flags/download.jpeg"),
+            image: AssetImage("assets/background/background.jpeg"),
             fit: BoxFit.cover,
           ),
         ),
@@ -66,7 +64,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          'SHARE',
+                          'SHAREPLUS',
                           style: TextStyle(
                             color: Color(0xff66fcf1),
                             fontSize: 45,
@@ -74,11 +72,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
                             fontWeight: FontWeight.w900,
                           ),
                         ),
-                        Image.asset(
-                          "assets/flags/himage.png",
-                          width: 100,
-                          height: 100,
-                        ),
+                        
                       ],
                     ),
                     Spacer(),
@@ -96,6 +90,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
                         children: [
                           Image.asset(
                             "assets/flags/homelogo.png",
+                            color:Color(0xFF66FCF1),
                             width: 140,
                             height: 140,
                           ),
@@ -136,12 +131,12 @@ class _HomeScreen1State extends State<HomeScreen1> {
                         } else if (index == 1) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) =>  UploadScreen()),
+                            MaterialPageRoute(builder: (context) =>UploadScreen()),
                           );
                         } else if (index == 2) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => UploadScreen()),
+                            MaterialPageRoute(builder: (context) => HomeScreen1()),
                           );
                         }
                       },

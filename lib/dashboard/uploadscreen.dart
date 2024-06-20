@@ -7,15 +7,15 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-// void main() {
-//   runApp(MaterialApp(
-//     title: 'PDF Upload and View',
-//     theme: ThemeData(
-//       primarySwatch: Colors.blue,
-//     ),
-//     home: UploadScreen(),
-//   ));
-// }
+void main() {
+  runApp(MaterialApp(
+    title: 'PDF Upload and View',
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+    ),
+    home: UploadScreen(),
+  ));
+}
 
 class UploadScreen extends StatefulWidget {
   @override
