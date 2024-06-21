@@ -1,7 +1,90 @@
-// ignore_for_file: library_private_types_in_public_api
+// import 'package:flutter/material.dart';
+// import 'package:http/http.dart' as http;
+// import 'dart:convert';
+
+// class LoginScreen extends StatefulWidget {
+//   @override
+//   _LoginScreenState createState() => _LoginScreenState();
+// }
+
+// class _LoginScreenState extends State<LoginScreen> {
+//   final TextEditingController _usernameController = TextEditingController();
+//   final TextEditingController _passwordController = TextEditingController();
+
+//   Future<void> _login() async {
+//   final response = await http.post(
+//     Uri.parse('http://localhost:5036/api/Login/login'),
+//     headers: <String, String>{
+//       'Content-Type': 'application/json; charset=UTF-8',
+//     },
+//     body: jsonEncode(<String, String>{
+//       'Username': _usernameController.text,
+//       'Password': _passwordController.text,
+//     }),
+//   );
+
+//   if (response.statusCode == 200) {
+//     final responseData = jsonDecode(response.body);
+//     final role = responseData['role'];
+//     final message = responseData['message'];
+
+//     if (role == 'Admin') {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text(message)),
+//       );
+//       Navigator.pushReplacementNamed(context, '/homeScreen1');
+//     } else if (role == 'Associate') {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text(message)),
+//       );
+//       Navigator.pushReplacementNamed(context, '/splashScreen');
+//     } else {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text('Unknown Role')),
+//       );
+//     }
+//   } else {
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       SnackBar(content: Text('Login Failed')),
+//     );
+//   }
+// }
+
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text('Login')),
+//       body: Padding(
+//         padding: const EdgeInsets.all(16.0),
+//         child: Column(
+//           children: <Widget>[
+//             TextField(
+//               controller: _usernameController,
+//               decoration: InputDecoration(labelText: 'Username'),
+//             ),
+//             TextField(
+//               controller: _passwordController,
+//               decoration: InputDecoration(labelText: 'Password'),
+//               obscureText: true,
+//             ),
+//             SizedBox(height: 20),
+//             ElevatedButton(
+//               onPressed: _login,
+//               child: Text('Login'),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 import 'package:flutter/material.dart';
-import 'package:share_plus/dashboard/homescreen.dart';
+import 'package:http/http.dart' as http;
+import 'package:share_plus/dashboard/AdminHomeScreen.dart';
+import 'dart:convert';
+
 import 'package:share_plus/signupscreen/signup.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
@@ -20,37 +103,60 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _passwordVisible = false;
   bool _isLoading = false;
 
-  String _username = '';
-  String _password = '';
-
   void _togglePasswordVisibility() {
     setState(() {
       _passwordVisible = !_passwordVisible;
     });
   }
 
-  void _login() {
+  Future<void> _login() async {
     if (_formKey.currentState?.validate() ?? false) {
       _formKey.currentState?.save();
       setState(() {
         _isLoading = true;
       });
 
-      // Simulate a delay for the loading indicator
-      Future.delayed(const Duration(seconds: 3), () {
-        setState(() {
-          _isLoading = false;
-        });
+      final response = await http.post(
+        Uri.parse('http://localhost:5036/api/Login/login'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'Username': _usernameController.text,
+          'Password': _passwordController.text,
+        }),
+      );
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        final role = responseData['role'];
+        final message = responseData['message'];
 
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Login successful!')),
+          SnackBar(content: Text(message)),
         );
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeScreen1()),
+        if (role == 'Admin') {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => AdminHomeScreen()),
+          );
+        } else if (role == 'Associate') {
+          Navigator.pushReplacementNamed(context, '/AssociateHomeScreen');
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Unknown Role')),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Login Failed')),
         );
-      });
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -97,14 +203,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           CustomTextField(
                             controller: _usernameController,
                             hintText: 'Enter your username or email',
-                            // validator: (value) {
-                            //   if (value == null || value.isEmpty) {
-                            //     return 'Please enter a username or email';
-                            //   }
-                            //   return null;
-                            // },
-                            onSaved: (value) {
-                              _username = value ?? '';
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a username or email';
+                              }
+                              return null;
                             },
                           ),
                           const SizedBox(height: 20),
@@ -112,14 +215,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             controller: _passwordController,
                             hintText: 'Enter your password',
                             isPassword: !_passwordVisible,
-                            // validator: (value) {
-                            //   if (value == null || value.isEmpty) {
-                            //     return 'Please enter a password';
-                            //   }
-                            //   return null;
-                            // },
-                            onSaved: (value) {
-                              _password = value ?? '';
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a password';
+                              }
+                              return null;
                             },
                             suffixIcon: IconButton(
                               icon: Icon(
@@ -176,3 +276,4 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+

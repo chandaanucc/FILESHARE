@@ -49,7 +49,7 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
+          MaterialPageRoute(builder: (context) =>  LoginScreen()),
         );
       });
     } else {
@@ -207,7 +207,7 @@ class _AdminSignupScreenState extends State<AdminSignupScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const LoginScreen()),
+                                           LoginScreen()),
                                 );
                               },
                               child: const Text(

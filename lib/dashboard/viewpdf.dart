@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 
 
 class PdfViewScreen extends StatelessWidget {
