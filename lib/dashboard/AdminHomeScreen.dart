@@ -1,5 +1,6 @@
 import 'package:share_plus/dashboard/uploadscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/dashboard/viewpdf.dart';
 
 class AdminHomeScreen extends StatefulWidget {
   const AdminHomeScreen({Key? key}) : super(key: key);
@@ -132,7 +133,7 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
                         } else if (index == 1) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) =>UploadScreen()),
+                            MaterialPageRoute(builder: (context) =>ViewScreen()),
                           );
                         } else if (index == 2) {
                           Navigator.push(

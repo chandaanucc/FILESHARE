@@ -80,6 +80,8 @@
 //   }
 // }
 
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:share_plus/dashboard/AdminHomeScreen.dart';
@@ -124,6 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
         body: jsonEncode(<String, String>{
           'Username': _usernameController.text,
           'Password': _passwordController.text,
+          'Role':'User',
         }),
       );
 
@@ -143,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
         if (role == 'Admin') {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => AdminHomeScreen()),
+            MaterialPageRoute(builder: (context) => const AdminHomeScreen()),
           );
         } else if (role == 'Associate') {
           Navigator.pushReplacementNamed(context, '/AssociateHomeScreen');

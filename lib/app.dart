@@ -1,3 +1,5 @@
+import 'package:share_plus/dashboard/AdminHomeScreen.dart';
+import 'package:share_plus/dashboard/AssociateHomeScreen.dart';
 import 'package:share_plus/splashscreen/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -11,13 +13,17 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'SharePlus',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
         ),
-        home:  Scaffold(
+        home:  const Scaffold(
           body: Center( 
             child:SplashScreenState()
+            
             )
-              )
+              ),
+              routes: {
+        '/AdminHomeScreen': (context) => const AdminHomeScreen(),
+        '/AssociateHomeScreen': (context) => const AssociateHomeScreen(),
+      },
               );
   }
 }
