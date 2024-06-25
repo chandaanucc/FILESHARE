@@ -61,7 +61,7 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
                 child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
@@ -77,7 +77,7 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
                         
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Padding(
                       padding: const EdgeInsets.only(
                         left: 70,
@@ -92,7 +92,7 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
                         children: [
                           Image.asset(
                             "assets/flags/homelogo.png",
-                            color:Color(0xFF66FCF1),
+                            color:const Color(0xFF66FCF1),
                             width: 140,
                             height: 140,
                           ),
@@ -128,17 +128,17 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
                         if (index == 0) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => UploadScreen()),
+                            MaterialPageRoute(builder: (context) => const UploadScreen()),
                           );
                         } else if (index == 1) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) =>ViewScreen()),
+                            MaterialPageRoute(builder: (context) =>const ViewScreen()),
                           );
                         } else if (index == 2) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => AdminHomeScreen()),
+                            MaterialPageRoute(builder: (context) => const AdminHomeScreen()),
                           );
                         }
                       },
@@ -148,7 +148,7 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
                         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: Color.fromARGB(255, 8, 4, 23),
+                          color: const Color.fromARGB(255, 8, 4, 23),
                           boxShadow: [
                             BoxShadow(
                               spreadRadius: 1,
@@ -164,13 +164,13 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
                               images[index],
                               width: 50,
                               height: 50,
-                              color: Color(0xff45A29E),
+                              color: const Color(0xff45A29E),
                               fit: BoxFit.contain,
                             ),
                             const SizedBox(height: 10),
                             Text(
                               imageData[index],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 color: Color(0xffC5C6C7),
                                 fontWeight: FontWeight.bold,

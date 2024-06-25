@@ -26,6 +26,8 @@ class _PdfViewScreenState extends State<PdfViewScreen> {
 
 Future<void> _fetchPdf(int fileId) async {
   var url = Uri.parse('http://10.0.2.2:5036/api/ViewFiles/view/$fileId');
+  // var url = Uri.parse('http://locahost:5036/api/ViewFiles/view/$fileId');
+  // var url = Uri.parse('http://192.168.1.2/api/ViewFiles/view/$fileId');
 
   
   try {
@@ -49,6 +51,12 @@ Future<void> _fetchPdf(int fileId) async {
     }
   } catch (e) {
     print('Error fetching PDF: $e');
+    ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error fetching file: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
     setState(() {
       isLoading = false;
     });
@@ -67,6 +75,8 @@ Future<void> _fetchPdf(int fileId) async {
           : localFilePath != null
               ? PDFView(
                   filePath: localFilePath!,
+                  fitEachPage: true,
+                  fitPolicy: FitPolicy.BOTH,
                 )
               : const Center(
                   child: Text('Failed to load PDF'),

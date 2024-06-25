@@ -2,7 +2,7 @@ import 'package:share_plus/dashboard/uploadscreen.dart';
 import 'package:flutter/material.dart';
 
 class AssociateHomeScreen extends StatefulWidget {
-  const AssociateHomeScreen({Key? key}) : super(key: key);
+  const AssociateHomeScreen({super.key});
 
   @override
   _HomeScreen1State createState() => _HomeScreen1State();
@@ -58,7 +58,7 @@ class _HomeScreen1State extends State<AssociateHomeScreen> {
                 child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
@@ -74,7 +74,7 @@ class _HomeScreen1State extends State<AssociateHomeScreen> {
                         
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Padding(
                       padding: const EdgeInsets.only(
                         left: 70,
@@ -89,7 +89,7 @@ class _HomeScreen1State extends State<AssociateHomeScreen> {
                         children: [
                           Image.asset(
                             "assets/flags/homelogo.png",
-                            color:Color(0xFF66FCF1),
+                            color:const Color(0xFF66FCF1),
                             width: 140,
                             height: 140,
                           ),
@@ -145,7 +145,7 @@ class _HomeScreen1State extends State<AssociateHomeScreen> {
                         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: Color.fromARGB(255, 8, 4, 23),
+                          color: const Color.fromARGB(255, 8, 4, 23),
                           boxShadow: [
                             BoxShadow(
                               spreadRadius: 1,
@@ -161,13 +161,13 @@ class _HomeScreen1State extends State<AssociateHomeScreen> {
                               images[index],
                               width: 50,
                               height: 50,
-                              color: Color(0xff45A29E),
+                              color: const Color(0xff45A29E),
                               fit: BoxFit.contain,
                             ),
                             const SizedBox(height: 10),
                             Text(
                               imageData[index],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 color: Color(0xffC5C6C7),
                                 fontWeight: FontWeight.bold,
