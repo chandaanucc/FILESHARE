@@ -18,7 +18,6 @@ class App extends StatelessWidget {
         home:  const Scaffold(
           body: Center( 
             child:SplashScreenState()
-            
             )
               ),
               routes: {
@@ -26,7 +25,7 @@ class App extends StatelessWidget {
         '/AssociateHomeScreen': (context) => const AssociateHomeScreen(),
         '/LoginScreen': (context) => const LoginScreen(),
       },
-              );
+      );
   }
 }
 

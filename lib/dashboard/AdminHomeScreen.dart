@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:share_plus/dashboard/uploadscreen.dart';
+import 'package:share_plus/dashboard/viewpdf.dart';
 
 class AdminHomeScreen extends StatefulWidget {
   const AdminHomeScreen({super.key});
@@ -33,8 +34,9 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
 //   }
 
   Future<void> logout(BuildContext context) async {
-    // final url = Uri.parse('http://10.0.2.2:5036/api/Login/logout'); // Use the correct logout API endpoint
-  final url = Uri.parse('http://localhost:5036/api/Login/logout');
+    final url = Uri.parse('http://10.0.2.2:5036/api/Login/logout'); // Use the correct logout API endpoint
+    // final url = Uri.parse('http://127.0.0.1:5036/api/Login/logout'); //mobile
+  // final url = Uri.parse('http://localhost:5036/api/Login/logout');
     try {
       final response = await http.post(url);
 
@@ -94,9 +96,9 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
                     width: width,
                     child: Padding(
                       padding: const EdgeInsets.only(
-                        top: 70, // Adjusted top padding for "ADMIN" text
+                        top: 100, // Adjusted top padding for "ADMIN" text
                         left: 30,
-                        bottom: 100,
+                        bottom: 50,
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -167,13 +169,13 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
                               } else if (index == 1) {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => const UploadScreen()),
+                                  MaterialPageRoute(builder: (context) => const ViewScreen()),
                                 );
                               } else if (index == 2) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const AdminHomeScreen()),
-                                );
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(builder: (context) => const ViewScreen()),
+                                // );
                               }
                             },
                             child: Container(
@@ -222,16 +224,23 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
               ),
             ),
             Positioned(
-              top: 30,
+              top: 25,
               right: 20,
-              child: IconButton(
+              child: Column(children:[IconButton(
                 icon: const Icon(
                   Icons.logout,
                   color: Color(0xFF66FCF1),
                 ),
                 onPressed: () => logout(context),
               ),
-            ),
+              const Text('Logout', style:TextStyle(fontSize: 10,
+               color:Color(0xFF66FCF1))
+              ),
+              
+      ],
+      ),
+            
+      )
             // Positioned(
             //   top: 30,
             //   left: 20,

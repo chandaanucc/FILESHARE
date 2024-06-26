@@ -1,11 +1,12 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, library_private_types_in_public_api, use_build_context_synchronously
 
 import 'package:flutter/material.dart'; // Add this import
 import 'package:http/http.dart' as http;
-import 'package:share_plus/dashboard/uploadscreen.dart';
+//import 'package:share_plus/dashboard/uploadscreen.dart';
+import 'package:share_plus/dashboard/viewpdf.dart';
 
 class AssociateHomeScreen extends StatefulWidget {
-  const AssociateHomeScreen({Key? key}) : super(key: key);
+  const AssociateHomeScreen({super.key});
 
   @override
   _HomeScreen1State createState() => _HomeScreen1State();
@@ -33,13 +34,14 @@ class _HomeScreen1State extends State<AssociateHomeScreen> {
   // }
 
   Future<void> logout(BuildContext context) async {
-    //final url = Uri.parse('http://10.0.2.2:5036/api/Login/logout'); // Use the correct logout API endpoint
-    final url = Uri.parse('http://localhost:5036/api/Login/logout');
+    final url = Uri.parse('http://10.0.2.2:5036/api/Login/logout'); // Use the correct logout API endpoint
+    // final url = Uri.parse('http://127.0.0.1:5036/api/Login/logout');
+    // final url = Uri.parse('http://localhost:5036/api/Login/logout');
 
     try {
       final response = await http.post(url);
 
-      if (response.statusCode == 302) {
+      if (response.statusCode == 200) {
         Navigator.pushReplacementNamed(context, '/LoginScreen');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Logout Successfully')),
@@ -93,14 +95,14 @@ class _HomeScreen1State extends State<AssociateHomeScreen> {
                     width: width,
                     child: Padding(
                       padding: const EdgeInsets.only(
-                        top: 70, // Adjusted top padding for "ADMIN" text
+                        top: 100, // Adjusted top padding for "ADMIN" text
                         left: 30,
-                        bottom: 100,
+                        bottom: 50,
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Row(
+                          const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
@@ -114,7 +116,7 @@ class _HomeScreen1State extends State<AssociateHomeScreen> {
                               ),
                             ],
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Padding(
                             padding: const EdgeInsets.only(
                               left: 0,
@@ -125,7 +127,7 @@ class _HomeScreen1State extends State<AssociateHomeScreen> {
                               children: [
                                 Image.asset(
                                   "assets/flags/homelogo.png",
-                                  color: Color(0xFF66FCF1),
+                                  color: const Color(0xFF66FCF1),
                                   width: 140,
                                   height: 140,
                                 ),
@@ -161,7 +163,7 @@ class _HomeScreen1State extends State<AssociateHomeScreen> {
                               if (index == 0) {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => UploadScreen()),
+                                  MaterialPageRoute(builder: (context) => const ViewScreen()),
                                 );
                             //   } else if (index == 1) {
                             //     Navigator.push(
@@ -183,7 +185,7 @@ class _HomeScreen1State extends State<AssociateHomeScreen> {
                               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: Color.fromARGB(255, 8, 4, 23),
+                                color: const Color.fromARGB(255, 8, 4, 23),
                                 boxShadow: [
                                   BoxShadow(
                                     spreadRadius: 1,
@@ -199,13 +201,13 @@ class _HomeScreen1State extends State<AssociateHomeScreen> {
                                     images[index],
                                     width: 50,
                                     height: 50,
-                                    color: Color(0xff45A29E),
+                                    color: const Color(0xff45A29E),
                                     fit: BoxFit.contain,
                                   ),
                                   const SizedBox(height: 10),
                                   Text(
                                     imageData[index],
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       color: Color(0xffC5C6C7),
                                       fontWeight: FontWeight.bold,
@@ -223,19 +225,24 @@ class _HomeScreen1State extends State<AssociateHomeScreen> {
               ),
             ),
             Positioned(
-              top: 30,
+              top: 25,
               right: 20,
-              child: IconButton(
-                icon: Icon(
+              child: Column(children:[IconButton(
+                icon: const Icon(
                   Icons.logout,
                   color: Color(0xFF66FCF1),
                 ),
                 onPressed: () => logout(context),
               ),
-            ),
+              const Text('Logout', style:TextStyle(fontSize: 10,
+               color:Color(0xFF66FCF1))
+              ),
+              
+      ],
+      ),
             
-          ],
-        ),
+      )
+    ]),
       ),
     );
   }

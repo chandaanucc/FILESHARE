@@ -6,9 +6,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 
 class PdfViewScreen extends StatefulWidget {
-  final int fileId;
-
-  const PdfViewScreen({Key? key, required this.fileId}) : super(key: key);
+  
+  const PdfViewScreen({Key? key}) : super(key: key);
 
   @override
   _PdfViewScreenState createState() => _PdfViewScreenState();
@@ -21,12 +20,12 @@ class _PdfViewScreenState extends State<PdfViewScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchPdf(widget.fileId);
+    _fetchLatestPdf();
   }
 
-Future<void> _fetchPdf(int fileId) async {
-  // var url = Uri.parse('http://10.0.2.2:5036/api/ViewFiles/view/$fileId');
-  var url = Uri.parse('http://locahost:5036/api/ViewFiles/view/$fileId');
+Future<void> _fetchLatestPdf() async {
+  var url = Uri.parse('http://10.0.2.2:5036/api/ViewFiles/view/latest');
+  // var url = Uri.parse('http://locahost:5036/api/ViewFiles/view/$fileId');
   // var url = Uri.parse('http://192.168.1.2/api/ViewFiles/view/$fileId');
 
   
@@ -108,11 +107,11 @@ class ViewScreen extends StatelessWidget {
         child: ElevatedButton(
           onPressed: () {
             // Replace 1 with the actual file ID you want to fetch
-            int fileId = 1; // Replace with your actual file ID
+            //int fileId = 1; // Replace with your actual file ID
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => PdfViewScreen(fileId: fileId),
+                builder: (context) => PdfViewScreen(),
               ),
             );
           },

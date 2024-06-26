@@ -45,6 +45,9 @@ dependencies:
   # pdf_flutter: ^1.4.2
  
   http: ^1.2.1
+  flutter_windowmanager: 
+  
+  
   
   
   
