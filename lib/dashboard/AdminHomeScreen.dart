@@ -41,7 +41,7 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
       final response = await http.post(url);
 
       if (response.statusCode == 200) {
-        Navigator.pushReplacementNamed(context, '/LoginScreen');
+        Navigator.pushReplacementNamed(context, '/LoginScreen');//chandhaanu
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Logout Successfully')),
         ); // Navigate to login screen after successful logout
