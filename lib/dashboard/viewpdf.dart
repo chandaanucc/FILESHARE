@@ -24,7 +24,7 @@ class _PdfViewScreenState extends State<PdfViewScreen> {
   }
 
 Future<void> _fetchLatestPdf() async {
-  var url = Uri.parse('http://10.0.2.2:5036/api/ViewFiles/view/latest');
+  var url = Uri.parse('http://10.0.2.2:5031/api/ViewFiles/view/latest');
   // var url = Uri.parse('http://locahost:5036/api/ViewFiles/view/$fileId');
   // var url = Uri.parse('http://192.168.1.2/api/ViewFiles/view/$fileId');
 

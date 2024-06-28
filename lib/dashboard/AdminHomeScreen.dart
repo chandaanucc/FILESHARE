@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:share_plus/dashboard/AssociatesListScreen.dart';
 import 'package:share_plus/dashboard/uploadscreen.dart';
 import 'package:share_plus/dashboard/viewpdf.dart';
 
@@ -34,7 +35,7 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
 //   }
 
   Future<void> logout(BuildContext context) async {
-    final url = Uri.parse('http://10.0.2.2:5036/api/Login/logout'); // Use the correct logout API endpoint darsana
+    final url = Uri.parse('http://10.0.2.2:5031/api/Login/logout'); // Use the correct logout API endpoint darsana
     // final url = Uri.parse('http://127.0.0.1:5036/api/Login/logout'); //mobile
   // final url = Uri.parse('http://localhost:5036/api/Login/logout');
     try {
@@ -67,8 +68,8 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
   final List<String> imageData = [
     "Upload Pdf",
     "View Pdf",
-    "My Uploads",
-    "Edit Pdf",
+    "My Asscociates",
+    "My Upoads",
   ];
 
   @override
@@ -172,10 +173,10 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
                                   MaterialPageRoute(builder: (context) => const ViewScreen()),
                                 );
                               } else if (index == 2) {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(builder: (context) => const ViewScreen()),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => AssociatesListScreen()),
+                                );
                               }
                             },
                             child: Container(

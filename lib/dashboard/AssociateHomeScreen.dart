@@ -35,7 +35,7 @@ class _HomeScreen1State extends State<AssociateHomeScreen> {
 
   Future<void> logout(BuildContext context) async {
     final url = Uri.parse(
-        'http://10.0.2.2:5036/api/Login/logout'); // Use the correct logout API endpoint
+        'http://10.0.2.2:5031/api/Login/logout'); // Use the correct logout API endpoint
     // final url = Uri.parse('http://127.0.0.1:5036/api/Login/logout');
     // final url = Uri.parse('http://localhost:5036/api/Login/logout');
 

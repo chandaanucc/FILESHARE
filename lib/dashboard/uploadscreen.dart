@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 class FileUploadService {
-  static const String baseUrl = 'http://10.0.2.2:5036/api/UploadFiles/upload'; // for emulators
+  static const String baseUrl = 'http://10.0.2.2:5031/api/UploadFiles/upload'; // for emulators
   // static const String baseUrl = 'http://localhost:5036/api/UploadFiles/upload';
   // static const String baseUrl = 'http://192.168.1.2:5036/api/UploadFiles/upload'; // for phone
 
