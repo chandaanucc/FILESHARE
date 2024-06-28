@@ -34,7 +34,7 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
 //   }
 
   Future<void> logout(BuildContext context) async {
-    final url = Uri.parse('http://10.0.2.2:5036/api/Login/logout'); // Use the correct logout API endpoint
+    final url = Uri.parse('http://10.0.2.2:5036/api/Login/logout'); // Use the correct logout API endpoint darsana
     // final url = Uri.parse('http://127.0.0.1:5036/api/Login/logout'); //mobile
   // final url = Uri.parse('http://localhost:5036/api/Login/logout');
     try {
