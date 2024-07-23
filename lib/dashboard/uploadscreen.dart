@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import '../utils/global_var.dart' as  globals;
 
 class FileUploadService {
   static const String baseUrl = 'http://10.0.2.2:5031/api/UploadFiles/upload'; // for emulators
@@ -32,6 +33,7 @@ class FileUploadService {
 
       if (response.statusCode == 200) {
         print('Upload successful');
+        print('Upload Username, ${globals.username}');
         return response.body;
       } else {
         print('Upload failed with status code: ${response.statusCode}');

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart'; // Add this import
 import 'package:http/http.dart' as http;
 //import 'package:share_plus/dashboard/uploadscreen.dart';
 import 'package:share_plus/dashboard/viewpdf.dart';
+import '../utils/global_var.dart'as globals;
 
 class AssociateHomeScreen extends StatefulWidget {
   const AssociateHomeScreen({super.key});
@@ -35,27 +36,28 @@ class _HomeScreen1State extends State<AssociateHomeScreen> {
 
   Future<void> logout(BuildContext context) async {
     final url = Uri.parse(
-        'http://10.0.2.2:5031/api/Login/logout'); // Use the correct logout API endpoint
-    // final url = Uri.parse('http://127.0.0.1:5036/api/Login/logout');
+       'http://10.0.2.2:5031/api/Login/logout'); // Use the correct logout API endpoint
+     //final url = Uri.parse('http://127.0.0.1:5036/api/Login/logout');
     // final url = Uri.parse('http://localhost:5036/api/Login/logout');
 
     try {
       final response = await http.post(url);
 
       if (response.statusCode == 200) {
+        globals.username = ''; // to clr global
         Navigator.pushReplacementNamed(context, '/LoginScreen');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Logout Successfully')),
         ); // Navigate to login screen after successful logout
+        print('Username Logged Out:${globals.username}');
       } else {
-        // Handle other status codes, if needed
+        
         print('Logout failed with status code: ${response.statusCode}');
-        // Show an error dialog or message to the user
+      
       }
     } catch (e) {
       print('Error during logout: $e');
-      // Handle network errors or exceptions
-      // Show an error dialog or message to the user
+      
     }
   }
 

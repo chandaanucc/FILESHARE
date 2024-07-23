@@ -90,6 +90,7 @@ import 'dart:convert';
 import 'package:share_plus/signupscreen/signup.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
+import '../utils/global_var.dart' as globals;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -137,6 +138,8 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       if (response.statusCode == 200) {
+        globals.username = _usernameController.text;
+        print('Login Username: ${globals.username}');
         final responseData = jsonDecode(response.body);
         final role = responseData['role'];
         final message = responseData['message'];
@@ -144,14 +147,17 @@ class _LoginScreenState extends State<LoginScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(message)),
         );
+        
 
         if (role == 'Admin') {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const AdminHomeScreen()),
-          );
+            );
+            print('Navigating as admin: ${globals.username}');
         } else if (role == 'Associate') {
           Navigator.pushReplacementNamed(context, '/AssociateHomeScreen');
+          print("Navigating as Associate:${globals.username}");
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Unknown Role')),

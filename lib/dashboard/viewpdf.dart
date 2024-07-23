@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import '../utils/global_var.dart' as globals;
 
 class PdfViewScreen extends StatefulWidget {
   
@@ -17,14 +18,20 @@ class _PdfViewScreenState extends State<PdfViewScreen> {
   String? localFilePath;
   bool isLoading = true; // Track loading state
 
+  
+
   @override
   void initState() {
     super.initState();
     _fetchLatestPdf();
   }
 
+
+
 Future<void> _fetchLatestPdf() async {
-  var url = Uri.parse('http://10.0.2.2:5031/api/ViewFiles/view/latest');
+  
+  print('view,${globals.username}');
+  var url = Uri.parse('http://10.0.2.2:5031/api/ViewFiles/view/latest?username=${globals.username}');
   // var url = Uri.parse('http://locahost:5036/api/ViewFiles/view/$fileId');
   // var url = Uri.parse('http://192.168.1.2/api/ViewFiles/view/$fileId');
 
@@ -33,6 +40,7 @@ Future<void> _fetchLatestPdf() async {
     var response = await http.get(url);
 
     if (response.statusCode == 200) {
+      print('Username viewed: ${globals.username}');
       var bytes = response.bodyBytes;
       var dir = await getApplicationDocumentsDirectory();
       File file = File('${dir.path}/Document.pdf');
@@ -43,6 +51,7 @@ Future<void> _fetchLatestPdf() async {
         isLoading = false;
       });
     } else {
+      print('Username error: ${globals.username}');
       print('Failed to load PDF: ${response.statusCode}');
       setState(() {
         isLoading = false;
@@ -106,7 +115,9 @@ class ViewScreen extends StatelessWidget {
         child: Center(
         child: ElevatedButton(
           onPressed: () {
-            // Replace 1 with the actual file ID you want to fetch
+            // Replace 1 with the actu
+            print('Navigating to PdfViewScreen with username: ${globals.username}');
+            //al file ID you want to fetch
             //int fileId = 1; // Replace with your actual file ID
             Navigator.push(
               context,

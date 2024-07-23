@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:share_plus/dashboard/AssociatesListScreen.dart';
 import 'package:share_plus/dashboard/uploadscreen.dart';
 import 'package:share_plus/dashboard/viewpdf.dart';
+import '../utils/global_var.dart' as globals;
 
 class AdminHomeScreen extends StatefulWidget {
   const AdminHomeScreen({super.key});
@@ -42,10 +43,12 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
       final response = await http.post(url);
 
       if (response.statusCode == 200) {
+        globals.username = ''; // to clr global
         Navigator.pushReplacementNamed(context, '/LoginScreen');//chandhaanu
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Logout Successfully')),
         ); // Navigate to login screen after successful logout
+        print('Username Logged Out: ${globals.username}');
       } else {
         // Handle other status codes, if needed
         print('Logout failed with status code: ${response.statusCode}');
@@ -69,7 +72,7 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
     "Upload Pdf",
     "View Pdf",
     "My Asscociates",
-    "My Upoads",
+    "My Uploads",
   ];
 
   @override
@@ -167,16 +170,19 @@ class _HomeScreen1State extends State<AdminHomeScreen> {
                                   context,
                                   MaterialPageRoute(builder: (context) => const UploadScreen()),
                                 );
+                                print("Navigating to Upload page as: ${globals.username}");
                               } else if (index == 1) {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => const ViewScreen()),
                                 );
+                                print("Navigating to View page as: ${globals.username}");
                               } else if (index == 2) {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) => AssociatesListScreen()),
                                 );
+                                print("Navigating to AssociateList page as: ${globals.username}");
                               }
                             },
                             child: Container(
