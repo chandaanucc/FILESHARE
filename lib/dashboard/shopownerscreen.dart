@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -41,7 +40,10 @@ class ShopOwnerPage extends StatefulWidget {
 
 class _ShopOwnerPageState extends State<ShopOwnerPage> {
   List<Client> _clients = [];
+  List<Client> _filteredClients = [];
   Map<int, bool> _sharedStatus = {}; // To track share/unshare state
+  String? _selectedRegion;
+  List<String> _regions = [];
 
   @override
   void initState() {
@@ -50,7 +52,7 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
   }
 
   Future<void> _fetchClients() async {
-    final url = 'http://10.0.2.2:5031/api/Clients'; // Replace with your API endpoint
+    final url = 'http://10.0.2.2:5031/api/Clients/get-clients'; // Replace with your API endpoint
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -60,9 +62,13 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
 
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
+        print('Fetched Client Data: $data');
         setState(() {
           _clients = data.map((json) => Client.fromJson(json as Map<String, dynamic>)).toList();
+          _filteredClients = _clients;
           _sharedStatus = {for (var client in _clients) client.id: false}; // Initialize share status
+          _regions = _clients.map((client) => client.region).toSet().where((region) => region != null).cast<String>().toList();
+          print('Available Regions: $_regions');
         });
       } else {
         print('Failed to load clients, Status Code: ${response.statusCode}');
@@ -73,6 +79,46 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to fetch clients: $e')),
       );
+    }
+  }
+
+  void _filterByRegion(String? region) async {
+    setState(() {
+      _selectedRegion = region;
+    });
+
+    print('Selected Region: $region');
+
+    if (region == null || region.isEmpty) {
+      setState(() {
+        _filteredClients = _clients;
+      });
+      print('No region selected, displaying all clients');
+    } else {
+      // Construct URL with region in the path
+      final url = 'http://10.0.2.2:5031/api/Clients/region/${Uri.encodeComponent(region)}';
+      print('Fetching clients from URL: $url');
+      
+      final response = await http.get(Uri.parse(url));
+
+      print('Response Status: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        print('Filtered Client Data: $data');
+        final List<Client> clients = data.map((json) => Client.fromJson(json as Map<String, dynamic>)).toList();
+
+        setState(() {
+          _filteredClients = clients;
+          print('Filtered Clients: $_filteredClients');
+        });
+      } else {
+        print('Failed to load clients: ${response.statusCode}');
+        setState(() {
+          _filteredClients = [];
+        });
+      }
     }
   }
 
@@ -162,6 +208,21 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
           },
         ),
         actions: [
+          DropdownButton<String>(
+            value: _selectedRegion,
+            hint: const Text('Select Region', style: TextStyle(color: Colors.white)),
+            dropdownColor: Colors.white,
+            items: _regions.map((String region) {
+              return DropdownMenuItem<String>(
+                value: region,
+                child: Text(region, style: const TextStyle(color: Colors.black)),
+              );
+            }).toList(),
+            onChanged: (String? newValue) {
+              _filterByRegion(newValue);
+            },
+            iconEnabledColor: Colors.grey,
+          ),
           IconButton(
             icon: const Icon(Icons.local_hospital),
             onPressed: () {
@@ -194,9 +255,9 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
                 children: [
                   Expanded(
                     child: ListView.builder(
-                      itemCount: _clients.length,
+                      itemCount: _filteredClients.length,
                       itemBuilder: (context, index) {
-                        final client = _clients[index];
+                        final client = _filteredClients[index];
                         final isShared = _sharedStatus[client.id] ?? false;
 
                         return Card(
@@ -238,4 +299,3 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
     );
   }
 }
-
