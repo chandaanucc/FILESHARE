@@ -14,6 +14,19 @@ class _ShopOwnerDialogState extends State<ShopOwnerDialog> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _regionController = TextEditingController();
+  String? _selectedRegion;
+
+
+  final List<String> _regions = [
+
+    'Kochi',
+    'Delhi',
+    'Pune',
+    'KolKata',
+    'Bangalore',
+    'Mumbai',
+
+  ];
 
   Future<void> _sendDataToBackend() async {
     final url = 'http://10.0.2.2:5031/api/Clients'; // Your API endpoint
@@ -21,7 +34,7 @@ class _ShopOwnerDialogState extends State<ShopOwnerDialog> {
     final phoneNumber = int.tryParse(_phoneController.text) ?? 0;
     final region = _regionController.text.trim();
 
-    if (region.isEmpty) {
+   if (_selectedRegion == null || _selectedRegion!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Region is required')),
       );
@@ -32,7 +45,8 @@ class _ShopOwnerDialogState extends State<ShopOwnerDialog> {
       'clientName': _nameController.text,
       'mail': _emailController.text,
       'phone': phoneNumber,
-      'region': region,
+      'region': _selectedRegion,
+      
     };
 
     try {
@@ -65,7 +79,7 @@ class _ShopOwnerDialogState extends State<ShopOwnerDialog> {
     _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
-    _regionController.dispose();
+    // _regionController.dispose();
     super.dispose();
   }
 
@@ -102,7 +116,7 @@ class _ShopOwnerDialogState extends State<ShopOwnerDialog> {
                 ),
               ),
 
-              SizedBox(height: 20,),
+              SizedBox(height: 10,),
         
               TextField(
                 controller: _emailController,
@@ -110,7 +124,7 @@ class _ShopOwnerDialogState extends State<ShopOwnerDialog> {
                   labelText: 'Email',
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 10,),
         
               TextField(
                 controller: _phoneController,
@@ -118,15 +132,38 @@ class _ShopOwnerDialogState extends State<ShopOwnerDialog> {
                   labelText: 'Phone Number',
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 10,),
         
-              TextField(
-                controller: _regionController,
+              // TextField(
+              //   controller: _regionController,
+              //   decoration: const InputDecoration(
+              //     labelText: 'Region',
+              //   ),
+              // ),
+
+              DropdownButtonFormField<String>(
+                value: _selectedRegion,
+                items: _regions.map((String region) {
+                  return DropdownMenuItem<String>(
+                    value: region,
+                    child: Text(region),
+                  );
+                }).toList(),
+                onChanged: (newValue) {
+                  setState(() {
+                    _selectedRegion = newValue;
+                  });
+                },
                 decoration: const InputDecoration(
                   labelText: 'Region',
                 ),
               ),
-              SizedBox(height: 20,),
+
+
+
+
+              
+              SizedBox(height: 30,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

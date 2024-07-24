@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -85,8 +86,8 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+            borderRadius: BorderRadius.circular(20),
+          ),
           backgroundColor: const Color.fromARGB(255, 209, 246, 243),
           title: const Text('Share Confirmation'),
           content: Text('Do you want to share this with ${client.mail}?'),
@@ -100,12 +101,7 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
-                setState(() {
-                  _sharedStatus[clientId] = true; // Set the client as shared
-                });
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Shared successfully with ${client.mail}')),
-                );
+                _shareWithClient(client.id); // Call the share function
               },
               child: const Text('Yes', style: TextStyle(fontWeight: FontWeight.normal, color: Colors.black)),
             ),
@@ -113,6 +109,42 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
         );
       },
     );
+  }
+
+  Future<void> _shareWithClient(int clientId) async {
+    final url = 'http://10.0.2.2:5031/api/Mail/SendPdf'; // Replace with your API endpoint
+    final pdfId = 1; // Replace with the actual PDF ID you want to share
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'ClientIds': [clientId],
+          'PdfId': pdfId,
+        }),
+      );
+
+      print('Response Status: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        setState(() {
+          _sharedStatus[clientId] = true; // Set the client as shared
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Shared successfully with the client.')),
+        );
+      } else {
+        print('Failed to share, Status Code: ${response.statusCode}');
+        throw Exception('Failed to share');
+      }
+    } catch (e) {
+      print('Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to share: $e')),
+      );
+    }
   }
 
   @override
@@ -183,21 +215,15 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
                               onPressed: () => _showShareConfirmationDialog(client.id),
                               child: Text(isShared ? 'Unshare' : 'Share'),
                               style: ElevatedButton.styleFrom(
-
                                 foregroundColor: Colors.white,
-                                  backgroundColor: isShared ? Colors.red : Colors.green,  // text color
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        12), // rounded corners
-                                  ),
-                                  fixedSize: Size(100, 40),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 8), // padding
-                                
-                               
+                                backgroundColor: isShared ? Colors.red : Colors.green,  // text color
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12), // rounded corners
+                                ),
+                                fixedSize: const Size(100, 40),
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8), // padding
                               ),
                             ),
-                            
                           ),
                         );
                       },
@@ -212,3 +238,4 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
     );
   }
 }
+
