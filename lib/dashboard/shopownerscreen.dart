@@ -43,7 +43,20 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
   List<Client> _filteredClients = [];
   Map<int, bool> _sharedStatus = {}; // To track share/unshare state
   String? _selectedRegion;
-  List<String> _regions = [];
+  final List<String> _regions = [
+
+    'Kochi',
+    'Delhi',
+    'Pune',
+    'KolKata',
+    'Bangalore',
+    'Mumbai',
+
+
+
+    
+
+  ];
 
   @override
   void initState() {
@@ -67,7 +80,7 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
           _clients = data.map((json) => Client.fromJson(json as Map<String, dynamic>)).toList();
           _filteredClients = _clients;
           _sharedStatus = {for (var client in _clients) client.id: false}; // Initialize share status
-          _regions = _clients.map((client) => client.region).toSet().where((region) => region != null).cast<String>().toList();
+          final _regions = _clients.map((client) => client.region).toSet().where((region) => region != null).cast<String>().toList();
           print('Available Regions: $_regions');
         });
       } else {
@@ -159,7 +172,7 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
 
   Future<void> _shareWithClient(int clientId) async {
     final url = 'http://10.0.2.2:5031/api/Mail/SendPdf'; // Replace with your API endpoint
-    final pdfId = 1; // Replace with the actual PDF ID you want to share
+   // Replace with the actual PDF ID you want to share
 
     try {
       final response = await http.post(
@@ -167,7 +180,7 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'ClientIds': [clientId],
-          'PdfId': pdfId,
+          
         }),
       );
 
@@ -192,6 +205,9 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
       );
     }
   }
+
+
+  
 
   @override
   Widget build(BuildContext context) {
