@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, library_private_types_in_public_api, use_super_parameters
+// ignore_for_file: avoid_print, library_private_types_in_public_api, use_super_parameters, use_build_context_synchronously
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -122,7 +122,7 @@ class ViewScreen extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => PdfViewScreen(),
+                builder: (context) => const PdfViewScreen(),
               ),
             );
           },

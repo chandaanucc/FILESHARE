@@ -9,7 +9,7 @@ import '../utils/global_var.dart' as  globals;
 
 class FileUploadService {
   static const String baseUrl = 'http://10.0.2.2:5031/api/UploadFiles/upload'; // for emulators
-  // static const String baseUrl = 'http://localhost:5036/api/UploadFiles/upload';
+  //static const String baseUrl = 'http://localhost:5036/api/UploadFiles/upload';
   // static const String baseUrl = 'http://192.168.1.2:5036/api/UploadFiles/upload'; // for phone
 
   Future<String?> uploadFile(PlatformFile file) async {
@@ -41,7 +41,7 @@ class FileUploadService {
       }
     } catch (e) {
       print('Exception during file upload: $e');
-      rethrow; // Rethrow the exception to propagate it upwards
+      rethrow; 
     }
   }
 }

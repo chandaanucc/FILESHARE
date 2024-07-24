@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -108,7 +110,7 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
       });
       print('No region selected, displaying all clients');
     } else {
-      // Construct URL with region in the path
+      
       final url = 'http://10.0.2.2:5031/api/Clients/region/${Uri.encodeComponent(region)}';
       print('Fetching clients from URL: $url');
       
@@ -192,7 +194,7 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
           _sharedStatus[clientId] = true; // Set the client as shared
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Shared successfully with the client.')),
+          const SnackBar(content: Text('Shared successfully with the client.')),
         );
       } else {
         print('Failed to share, Status Code: ${response.statusCode}');
@@ -216,7 +218,7 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
     return Scaffold(
       backgroundColor: const Color(0xFF66FCF1),
       appBar: AppBar(
-        title: const Center(child: Text('Shop Owner Details')),
+        title:const Text('Client Details'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -226,8 +228,8 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
         actions: [
           DropdownButton<String>(
             value: _selectedRegion,
-            hint: const Text('Select Region', style: TextStyle(color: Colors.white)),
-            dropdownColor: Colors.white,
+            hint: const Center(child: Text('Region', style: TextStyle(color: Colors.black))),
+            dropdownColor: const Color(0xFF66FCF1),
             items: _regions.map((String region) {
               return DropdownMenuItem<String>(
                 value: region,
@@ -240,7 +242,7 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
             iconEnabledColor: Colors.grey,
           ),
           IconButton(
-            icon: const Icon(Icons.local_hospital),
+            icon: const Icon(Icons.add),
             onPressed: () {
               showDialog(
                 context: context,
@@ -290,16 +292,20 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
                             subtitle: Text(client.mail ?? 'No Email', style: const TextStyle(color: Colors.white)),
                             trailing: ElevatedButton(
                               onPressed: () => _showShareConfirmationDialog(client.id),
-                              child: Text(isShared ? 'Unshare' : 'Share'),
                               style: ElevatedButton.styleFrom(
                                 foregroundColor: Colors.white,
-                                backgroundColor: isShared ? Colors.red : Colors.green,  // text color
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12), // rounded corners
-                                ),
-                                fixedSize: const Size(100, 40),
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8), // padding
+                                  backgroundColor: isShared ? Colors.red : Colors.green,  // text color
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        12), // rounded corners
+                                  ),
+                                  fixedSize: const Size(100, 40),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8), // padding
+                                
+                               
                               ),
+                              child: Text(isShared ? 'Unshare' : 'Share'),
                             ),
                           ),
                         );

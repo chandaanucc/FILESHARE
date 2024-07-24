@@ -80,7 +80,7 @@
 //   }
 // }
 
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -120,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       final response = await http.post(
-        // Uri.parse('http://localhost:5036/api/Login/login'),
+         //Uri.parse('http://localhost:5036/api/Login/login'),
         Uri.parse('http://10.0.2.2:5031/api/Login/login'),
         // Uri.parse('http://192.168.1.2:5036/api/Login/login'),
         headers: <String, String>{
