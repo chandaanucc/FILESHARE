@@ -43,7 +43,8 @@ class ShopOwnerPage extends StatefulWidget {
 class _ShopOwnerPageState extends State<ShopOwnerPage> {
   List<Client> _clients = [];
   List<Client> _filteredClients = [];
-  Map<int, bool> _sharedStatus = {}; // To track share/unshare state
+  Map<int, bool> _sharedStatus = {};
+  Map<int, bool> _checkboxStatus = {}; // To track share/unshare state
   String? _selectedRegion;
   final List<String> _regions = [
 
@@ -81,7 +82,11 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
         setState(() {
           _clients = data.map((json) => Client.fromJson(json as Map<String, dynamic>)).toList();
           _filteredClients = _clients;
-          _sharedStatus = {for (var client in _clients) client.id: false}; // Initialize share status
+          _sharedStatus = {for (var client in _clients) client.id: false}; 
+          _checkboxStatus = {for (var client in _clients) client.id: false};
+
+
+          // Initialize share status
           final _regions = _clients.map((client) => client.region).toSet().where((region) => region != null).cast<String>().toList();
           print('Available Regions: $_regions');
         });
@@ -277,37 +282,72 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
                       itemBuilder: (context, index) {
                         final client = _filteredClients[index];
                         final isShared = _sharedStatus[client.id] ?? false;
+                        final isChecked = _checkboxStatus[client.id] ?? false;
 
                         return Card(
+
                           color: Colors.black.withOpacity(0.7),
                           margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 10.0),
                           child: ListTile(
-                            leading: const CircleAvatar(
-                              backgroundColor: Color(0xFF66FCF1),
-                            ),
+                            // leading: Icon(
+                            //   isShared ? Icons.check : Icons.error,
+                            //   color: isShared ? Colors.green : Colors.red,
+                            // ),
                             title: Text(
-                              client.clientName ?? 'No Name', 
-                              style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                              client.clientName ?? 'No Name',
+                              style: const TextStyle(color: Colors.white),
                             ),
-                            subtitle: Text(client.mail ?? 'No Email', style: const TextStyle(color: Colors.white)),
-                            trailing: ElevatedButton(
-                              onPressed: () => _showShareConfirmationDialog(client.id),
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                  backgroundColor: isShared ? Colors.red : Colors.green,  // text color
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        12), // rounded corners
-                                  ),
-                                  fixedSize: const Size(100, 40),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 8), // padding
-                                
-                               
-                              ),
-                              child: Text(isShared ? 'Unshare' : 'Share'),
-                            ),
-                          ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  client.mail ?? 'No Email',
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                // Text(
+                                //   client.phone?.toString() ?? 'No Phone',
+                                //   style: const TextStyle(color: Colors.white),
+                                // ),
+                                 Text(
+                                  client.region ?? 'No Region',
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                              ]
+                        ),
+
+                        trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Checkbox(
+                                  value: isChecked,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _checkboxStatus[client.id] = value ?? false;
+                                    });
+                                  },
+                                ),
+                                if (isChecked)
+                                ElevatedButton(
+                                  
+                                  
+                  onPressed: () {
+                    _showShareConfirmationDialog(client.id);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green
+                  ),
+                  child: const Text(
+                    'Share',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+                                  
+
+                              ]
+                        )
+                          )
                         );
                       },
                     ),
