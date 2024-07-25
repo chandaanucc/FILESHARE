@@ -1,11 +1,8 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:share_plus/dashboard/clientalert.dart';
 
-// Define the Client class
 class Client {
   final int id;
   final String? clientName;
@@ -32,7 +29,6 @@ class Client {
   }
 }
 
-// ShopOwnerPage Widget
 class ShopOwnerPage extends StatefulWidget {
   const ShopOwnerPage({super.key});
 
@@ -43,22 +39,15 @@ class ShopOwnerPage extends StatefulWidget {
 class _ShopOwnerPageState extends State<ShopOwnerPage> {
   List<Client> _clients = [];
   List<Client> _filteredClients = [];
-  Map<int, bool> _sharedStatus = {};
   Map<int, bool> _checkboxStatus = {}; // To track share/unshare state
   String? _selectedRegion;
   final List<String> _regions = [
-
     'Kochi',
     'Delhi',
     'Pune',
     'KolKata',
     'Bangalore',
     'Mumbai',
-
-
-
-    
-
   ];
 
   @override
@@ -68,34 +57,22 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
   }
 
   Future<void> _fetchClients() async {
-    final url = 'http://10.0.2.2:5031/api/Clients/get-clients'; // Replace with your API endpoint
+    final url = 'http://10.0.2.2:5031/api/Clients/get-clients';
 
     try {
       final response = await http.get(Uri.parse(url));
 
-      print('Response Status: ${response.statusCode}');
-      print('Response Body: ${response.body}');
-
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
-        print('Fetched Client Data: $data');
         setState(() {
           _clients = data.map((json) => Client.fromJson(json as Map<String, dynamic>)).toList();
           _filteredClients = _clients;
-          _sharedStatus = {for (var client in _clients) client.id: false}; 
           _checkboxStatus = {for (var client in _clients) client.id: false};
-
-
-          // Initialize share status
-          final _regions = _clients.map((client) => client.region).toSet().where((region) => region != null).cast<String>().toList();
-          print('Available Regions: $_regions');
         });
       } else {
-        print('Failed to load clients, Status Code: ${response.statusCode}');
         throw Exception('Failed to load clients');
       }
     } catch (e) {
-      print('Error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to fetch clients: $e')),
       );
@@ -107,34 +84,22 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
       _selectedRegion = region;
     });
 
-    print('Selected Region: $region');
-
     if (region == null || region.isEmpty) {
       setState(() {
         _filteredClients = _clients;
       });
-      print('No region selected, displaying all clients');
     } else {
-      
       final url = 'http://10.0.2.2:5031/api/Clients/region/${Uri.encodeComponent(region)}';
-      print('Fetching clients from URL: $url');
-      
       final response = await http.get(Uri.parse(url));
-
-      print('Response Status: ${response.statusCode}');
-      print('Response Body: ${response.body}');
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
-        print('Filtered Client Data: $data');
         final List<Client> clients = data.map((json) => Client.fromJson(json as Map<String, dynamic>)).toList();
 
         setState(() {
           _filteredClients = clients;
-          print('Filtered Clients: $_filteredClients');
         });
       } else {
-        print('Failed to load clients: ${response.statusCode}');
         setState(() {
           _filteredClients = [];
         });
@@ -142,21 +107,21 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
     }
   }
 
-  Future<void> _showShareConfirmationDialog(int clientId) async {
-    final client = _clients.firstWhere((client) => client.id == clientId);
-    final isShared = _sharedStatus[clientId] ?? false;
+  Future<void> _showShareConfirmationDialog(List<Client> clients) async {
+    final clientCount = clients.length;
+    final clientEmails = clients.map((client) => client.mail).whereType<String>().join(', ');
 
     showDialog(
       context: context,
-      barrierDismissible: false, // Prevent closing the dialog by tapping outside
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
           backgroundColor: const Color.fromARGB(255, 209, 246, 243),
-          title: const Text('Share Confirmation'),
-          content: Text('Do you want to share this with ${client.mail}?'),
+          title: Text('Share Confirmation'),
+          content: Text('Do you want to share the PDF with $clientCount client${clientCount > 1 ? 's' : ''}?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -167,7 +132,7 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
-                _shareWithClient(client.id); // Call the share function
+                _shareWithClients(clients); // Call the share function for the selected clients
               },
               child: const Text('Yes', style: TextStyle(fontWeight: FontWeight.normal, color: Colors.black)),
             ),
@@ -177,44 +142,47 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
     );
   }
 
-  Future<void> _shareWithClient(int clientId) async {
-    final url = 'http://10.0.2.2:5031/api/Mail/SendPdf'; // Replace with your API endpoint
-   // Replace with the actual PDF ID you want to share
+  Future<void> _shareWithClients(List<Client> clients) async {
+    final clientIds = clients.map((client) => client.id).toList();
+    final url = 'http://10.0.2.2:5031/api/Mail/SendPdf';
 
     try {
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'ClientIds': [clientId],
-          
+          'ClientIds': clientIds,
         }),
       );
 
-      print('Response Status: ${response.statusCode}');
-      print('Response Body: ${response.body}');
-
       if (response.statusCode == 200) {
         setState(() {
-          _sharedStatus[clientId] = true; // Set the client as shared
+          for (var clientId in clientIds) {
+            _checkboxStatus[clientId] = false; // Uncheck the selected clients
+          }
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Shared successfully with the client.')),
+          const SnackBar(content: Text('Shared successfully with the clients.')),
         );
       } else {
-        print('Failed to share, Status Code: ${response.statusCode}');
         throw Exception('Failed to share');
       }
     } catch (e) {
-      print('Error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to share: $e')),
       );
     }
   }
 
-
-  
+  void _selectAllClients(bool selectAll) {
+    setState(() {
+      _checkboxStatus = {
+        for (var client in _filteredClients)
+          client.id: selectAll,
+      };
+    });
+     
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -223,7 +191,7 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
     return Scaffold(
       backgroundColor: const Color(0xFF66FCF1),
       appBar: AppBar(
-        title:const Text('Client Details'),
+        title: const Text('Client Details'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -250,8 +218,8 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
             icon: const Icon(Icons.add),
             onPressed: () {
               showDialog(
-                context: context,
-                builder: (context) => const ShopOwnerDialog(),
+                context: context, 
+                builder: (context) => const ShopOwnerDialog()
               );
             },
           ),
@@ -272,88 +240,73 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
                 ),
               ),
             ),
-            Positioned.fill(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: _filteredClients.length,
-                      itemBuilder: (context, index) {
-                        final client = _filteredClients[index];
-                        final isShared = _sharedStatus[client.id] ?? false;
-                        final isChecked = _checkboxStatus[client.id] ?? false;
-
-                        return Card(
-
-                          color: Colors.black.withOpacity(0.7),
-                          margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 10.0),
-                          child: ListTile(
-                            // leading: Icon(
-                            //   isShared ? Icons.check : Icons.error,
-                            //   color: isShared ? Colors.green : Colors.red,
-                            // ),
-                            title: Text(
-                              client.clientName ?? 'No Name',
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  client.mail ?? 'No Email',
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                // Text(
-                                //   client.phone?.toString() ?? 'No Phone',
-                                //   style: const TextStyle(color: Colors.white),
-                                // ),
-                                 Text(
-                                  client.region ?? 'No Region',
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              ]
-                        ),
-
-                        trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Checkbox(
-                                  value: isChecked,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _checkboxStatus[client.id] = value ?? false;
-                                    });
-                                  },
-                                ),
-                                if (isChecked)
-                                ElevatedButton(
-                                  
-                                  
-                  onPressed: () {
-                    _showShareConfirmationDialog(client.id);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green
-                  ),
-                  child: const Text(
-                    'Share',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                )
-                                  
-
-                              ]
-                        )
-                          )
-                        );
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        _selectAllClients(true);
                       },
+                      child: const Text('Select All'),
                     ),
+                    ElevatedButton(
+                      onPressed: () {
+                        _selectAllClients(false);
+                      },
+                      child: const Text('Deselect All'),
+                    ),
+                    if (_checkboxStatus.containsValue(true)) // Show Share button if any client is selected
+                      ElevatedButton(
+                        onPressed: () {
+                          final selectedClients = _clients.where((client) => _checkboxStatus[client.id] ?? false).toList();
+                          _showShareConfirmationDialog(selectedClients);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                        ),
+                        child: const Text(
+                          'Share',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                  ],
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _filteredClients.length,
+                    itemBuilder: (context, index) {
+                      final client = _filteredClients[index];
+                      final isChecked = _checkboxStatus[client.id] ?? false;
+
+                      return Card(
+                        color: Colors.black.withOpacity(0.7),
+                        margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 10.0),
+                        child: ListTile(
+                          title: Text(
+                            client.clientName ?? 'No Name',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          subtitle: Text(
+                            client.mail ?? 'No Email',
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                          trailing: Checkbox(
+                            value: isChecked,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                _checkboxStatus[client.id] = value ?? false;
+                              });
+                            },
+                            activeColor: Colors.green,
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),
@@ -361,3 +314,4 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
     );
   }
 }
+

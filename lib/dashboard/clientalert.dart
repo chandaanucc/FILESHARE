@@ -29,7 +29,7 @@ class _ShopOwnerDialogState extends State<ShopOwnerDialog> {
   ];
 
   Future<void> _sendDataToBackend() async {
-    final url = 'http://10.0.2.2:5031/api/Clients'; // Your API endpoint
+    final url = 'http://10.0.2.2:5031/api/Clients/add-clients'; // Your API endpoint
 
     final phoneNumber = int.tryParse(_phoneController.text) ?? 0;
     final region = _regionController.text.trim();
