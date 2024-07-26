@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:share_plus/dashboard/clientalert.dart';
+import '../utils/global_var.dart' as globals;
 
 class Client {
   final int id;
@@ -41,11 +44,12 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
   List<Client> _filteredClients = [];
   Map<int, bool> _checkboxStatus = {}; // To track share/unshare state
   String? _selectedRegion;
+   bool _isLoading = false;
   final List<String> _regions = [
     'Kochi',
     'Delhi',
     'Pune',
-    'KolKata',
+    'Kolkata',
     'Bangalore',
     'Mumbai',
   ];
@@ -57,7 +61,9 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
   }
 
   Future<void> _fetchClients() async {
-    final url = 'http://10.0.2.2:5031/api/Clients/get-clients';
+
+    print('Region, ${globals.region}');
+    final url = 'http://10.0.2.2:5031/api/Clients/region?region=${Uri.encodeComponent(globals.region)}'; // Replace with your API endpoint
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -78,8 +84,10 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
       );
     }
   }
+    
 
   void _filterByRegion(String? region) async {
+
     setState(() {
       _selectedRegion = region;
     });
@@ -89,7 +97,10 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
         _filteredClients = _clients;
       });
     } else {
-      final url = 'http://10.0.2.2:5031/api/Clients/region/${Uri.encodeComponent(region)}';
+      
+      final url = 'http://10.0.2.2:5031/api/Clients/region?region=${Uri.encodeComponent(region)}';
+      print('Fetching clients from URL: $url');
+      
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
@@ -98,6 +109,22 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
 
         setState(() {
           _filteredClients = clients;
+        });
+      }
+      else if (response.statusCode == 404) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Client not found.')),
+        );
+        setState(() {
+          _filteredClients = [];
+        });
+      }
+      else if (response.statusCode == 404) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Client not found.')),
+        );
+        setState(() {
+          _filteredClients = [];
         });
       } else {
         setState(() {
@@ -164,7 +191,9 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Shared successfully with the clients.')),
         );
-      } else {
+      }
+       else {
+        print('Failed to share, Status Code: ${response.statusCode}');
         throw Exception('Failed to share');
       }
     } catch (e) {
@@ -214,6 +243,7 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
             },
             iconEnabledColor: Colors.grey,
           ),
+
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {

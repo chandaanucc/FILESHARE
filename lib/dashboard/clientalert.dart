@@ -29,7 +29,7 @@ class _ShopOwnerDialogState extends State<ShopOwnerDialog> {
   ];
 
   Future<void> _sendDataToBackend() async {
-    final url = 'http://10.0.2.2:5031/api/Clients/add-clients'; // Your API endpoint
+    final url = 'http://10.0.2.2:5031/api/Clients/add-client'; // Your API endpoint
 
     final phoneNumber = int.tryParse(_phoneController.text) ?? 0;
     final region = _regionController.text.trim();
@@ -96,7 +96,7 @@ class _ShopOwnerDialogState extends State<ShopOwnerDialog> {
         padding: EdgeInsets.only(top: 40, left: 20, right: 20),
         child: Container(
           width: screenSize.width * 0.99, // 90% of screen width
-          height: screenSize.height * 0.49, // 50% of screen height
+          height: screenSize.height * 0.5, // 50% of screen height
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,

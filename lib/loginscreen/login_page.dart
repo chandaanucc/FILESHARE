@@ -88,6 +88,7 @@ import 'package:share_plus/dashboard/AdminHomeScreen.dart';
 import 'dart:convert';
 
 import 'package:share_plus/signupscreen/signup.dart';
+import '../dashboard/AssociateHomeScreen.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_text_field.dart';
 import '../utils/global_var.dart' as globals;
@@ -143,6 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
         final responseData = jsonDecode(response.body);
         final role = responseData['role'];
         final message = responseData['message'];
+        final region = responseData['region'];
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(message)),
@@ -156,8 +158,11 @@ class _LoginScreenState extends State<LoginScreen> {
             );
             print('Navigating as admin: ${globals.username}');
         } else if (role == 'Associate') {
-          Navigator.pushReplacementNamed(context, '/AssociateHomeScreen');
-          print("Navigating as Associate:${globals.username}");
+          globals.region = region ?? 'Unknown'; 
+          Navigator.pushReplacement(context,
+           MaterialPageRoute(builder: (context) =>  const AssociateHomeScreen())
+           );
+          print("Navigating as Associate: ${globals.username}, Region: ${globals.region}");
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Unknown Role')),
