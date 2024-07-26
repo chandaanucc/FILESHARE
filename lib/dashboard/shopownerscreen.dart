@@ -54,6 +54,10 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
     'Mumbai',
   ];
 
+  bool _isAllSelected = false;
+
+  
+
   @override
   void initState() {
     super.initState();
@@ -134,6 +138,8 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
     }
   }
 
+  
+
   Future<void> _showShareConfirmationDialog(List<Client> clients) async {
     final clientCount = clients.length;
     final clientEmails = clients.map((client) => client.mail).whereType<String>().join(', ');
@@ -203,14 +209,25 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
     }
   }
 
-  void _selectAllClients(bool selectAll) {
+  // void _selectAllClients(bool selectAll) {
+  //   setState(() {
+  //     _checkboxStatus = {
+  //       for (var client in _filteredClients)
+  //         client.id: selectAll,
+  //     };
+  //   });
+     
+  // }
+
+
+  void _toggleSelectAll() {
     setState(() {
+      _isAllSelected = !_isAllSelected;
       _checkboxStatus = {
         for (var client in _filteredClients)
-          client.id: selectAll,
+          client.id: _isAllSelected,
       };
     });
-     
   }
 
   @override
@@ -276,17 +293,18 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
-                      onPressed: () {
-                        _selectAllClients(true);
-                      },
-                      child: const Text('Select All'),
+                      onPressed: _toggleSelectAll,
+                      child: Text(_isAllSelected ? 'Deselect All' : 'Select All'),
+                      
+                      
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        _selectAllClients(false);
-                      },
-                      child: const Text('Deselect All'),
-                    ),
+
+                     
+                      
+                      
+                      
+                   
+                    
                     if (_checkboxStatus.containsValue(true)) // Show Share button if any client is selected
                       ElevatedButton(
                         onPressed: () {
