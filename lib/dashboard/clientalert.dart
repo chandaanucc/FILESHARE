@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -29,7 +31,7 @@ class _ShopOwnerDialogState extends State<ShopOwnerDialog> {
   ];
 
   Future<void> _sendDataToBackend() async {
-    final url = 'http://10.0.2.2:5031/api/Clients/add-client'; // Your API endpoint
+    const url = 'http://10.0.2.2:5031/api/Clients/add-client'; // Your API endpoint
 
     final phoneNumber = int.tryParse(_phoneController.text) ?? 0;
     final region = _regionController.text.trim();
@@ -93,7 +95,7 @@ class _ShopOwnerDialogState extends State<ShopOwnerDialog> {
       ),
       backgroundColor: const Color.fromARGB(255, 209, 246, 243),
       child: Padding(
-        padding: EdgeInsets.only(top: 40, left: 20, right: 20),
+        padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
         child: Container(
           width: screenSize.width * 0.99, // 90% of screen width
           height: screenSize.height * 0.5, // 50% of screen height
@@ -116,7 +118,7 @@ class _ShopOwnerDialogState extends State<ShopOwnerDialog> {
                 ),
               ),
 
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
         
               TextField(
                 controller: _emailController,
@@ -124,7 +126,7 @@ class _ShopOwnerDialogState extends State<ShopOwnerDialog> {
                   labelText: 'Email',
                 ),
               ),
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
         
               TextField(
                 controller: _phoneController,
@@ -132,7 +134,7 @@ class _ShopOwnerDialogState extends State<ShopOwnerDialog> {
                   labelText: 'Phone Number',
                 ),
               ),
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
         
               // TextField(
               //   controller: _regionController,
@@ -163,7 +165,7 @@ class _ShopOwnerDialogState extends State<ShopOwnerDialog> {
 
 
               
-              SizedBox(height: 30,),
+              const SizedBox(height: 30,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

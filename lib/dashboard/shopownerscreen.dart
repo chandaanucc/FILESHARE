@@ -67,7 +67,7 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
   Future<void> _fetchClients() async {
 
     print('Region, ${globals.region}');
-    final url = 'http://10.0.2.2:5031/api/Clients/region?region=${Uri.encodeComponent(globals.region)}'; // Replace with your API endpoint
+    final url = 'http://10.0.2.2:5031/api/Clients/region?region=${Uri.encodeComponent(globals.region)}'; 
 
     try {
       final response = await http.get(Uri.parse(url));
@@ -294,8 +294,12 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
                   children: [
                     ElevatedButton(
                       onPressed: _toggleSelectAll,
-                      child: Text(_isAllSelected ? 'Deselect All' : 'Select All'),
-                      
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9.0),
+                        ),),
+                      child: Text(_isAllSelected ? 'Deselect All' : 'Select All', style: TextStyle(color: Colors.black),),
                       
                     ),
 
@@ -313,10 +317,12 @@ class _ShopOwnerPageState extends State<ShopOwnerPage> {
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
-                        ),
+                          shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9.0),
+                        ),),
                         child: const Text(
                           'Share',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                       ),
                   ],
